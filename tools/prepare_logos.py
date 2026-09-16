@@ -26,18 +26,30 @@ from prepare_photos import slugify
 # (widest logo filled 0.97 of the width, tallest 0.86 of the height).
 SAFE_W, SAFE_H = 0.94, 0.86
 
+# Soft-key thresholds: below KEY_LO from the backdrop a pixel is background and
+# goes fully white, above KEY_HI it is ink and is kept, between the two it fades.
+KEY_LO, KEY_HI = 10, 48
 
-def key_out_panel(sheet: np.ndarray, box, tol: int = 22) -> Image.Image:
-    """Crop `box` out of `sheet`, dropping panel gradient left in the corners.
+
+def key_out_panel(sheet: np.ndarray, box, inset: int = 0, tol: int = 22) -> Image.Image:
+    """Crop `box` out of `sheet`, clearing panel background to white.
 
     Badges that are rounded or slanted leave some of the presentation graphic's
     background inside their bounding box. Flood-fill each corner, but only when
     that corner matches the panel colour sampled just outside the badge —
     otherwise a badge whose own corner is a pale block (Gresini's title bar)
     would be eaten too.
+
+    The fill gives a hard region; painting it flat white would leave the ragged
+    staircase edge of a binary mask, and would strip the antialiased fringe that
+    makes small artwork read cleanly. So inside that region each pixel is faded
+    towards white by how close it is to the background colour: compression
+    mottling in the flat background disappears, while a pixel that is partly
+    logo ink keeps that much of its ink.
     """
     x0, y0, x1, y1 = box
-    crop = sheet[y0:y1, x0:x1]
+    x0, y0, x1, y1 = x0 + inset, y0 + inset, x1 - inset, y1 - inset
+    crop = sheet[y0:y1, x0:x1].astype(np.int16)
     h, w = crop.shape[:2]
     mask = np.zeros((h + 2, w + 2), np.uint8)
     probe = 6
@@ -47,16 +59,68 @@ def key_out_panel(sheet: np.ndarray, box, tol: int = 22) -> Image.Image:
                                ((w - 1, h - 1), (x1 + probe, y1 + probe))):
         py = min(max(py, 0), sheet.shape[0] - 1)
         px = min(max(px, 0), sheet.shape[1] - 1)
-        outside = sheet[py, px].astype(int)
-        if np.abs(crop[cy, cx].astype(int) - outside).max() > tol:
+        if np.abs(crop[cy, cx] - sheet[py, px].astype(np.int16)).max() > tol:
             continue
-        cv2.floodFill(crop.copy(), mask, (cx, cy), 0, (12,) * 3, (12,) * 3,
+        cv2.floodFill(crop.astype(np.uint8), mask, (cx, cy), 0, (12,) * 3, (12,) * 3,
                       4 | cv2.FLOODFILL_MASK_ONLY | (255 << 8))
 
-    rgba = np.dstack([crop, np.full((h, w), 255, np.uint8)])
-    rgba[..., 3][mask[1:-1, 1:-1] > 0] = 0
-    img = Image.fromarray(rgba, "RGBA")
-    return img.crop(img.getbbox()) if img.getbbox() else img
+    region = mask[1:-1, 1:-1] > 0
+    if not region.any():
+        return Image.fromarray(crop.astype(np.uint8)).convert("RGBA")
+
+    # Grow the region by a pixel so the antialiased fringe is faded too.
+    region = cv2.dilate(region.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
+
+    backdrop = np.median(crop[mask[1:-1, 1:-1] > 0], axis=0)
+    dist = np.abs(crop - backdrop).max(axis=2)
+    keep = np.clip((dist - KEY_LO) / (KEY_HI - KEY_LO), 0, 1)[..., None]
+    faded = crop * keep + 255 * (1 - keep)
+    out = np.where(region[..., None], faded, crop).astype(np.uint8)
+    return trim(Image.fromarray(out).convert("RGBA"))
+
+
+def hull_out_panel(sheet: np.ndarray, box, thr: int, inset: int = 0) -> Image.Image:
+    """Isolate a badge by its convex hull, for badges the flood fill cannot key.
+
+    Where a badge is slanted and the panel behind it is both out of focus and
+    the same hue as the badge itself (Honda's red parallelogram on red), there
+    is no edge for a flood fill to stop at: a tolerance low enough to spare the
+    badge leaves a soft halo, and one high enough to clear it bleeds inside.
+    The badge is convex, so take everything far enough from the panel colour,
+    hull it, and whiten the outside. The polygon is rasterised at 4x and boxed
+    down so its edge lands antialiased rather than as a staircase.
+    """
+    x0, y0, x1, y1 = box
+    crop = sheet[y0 + inset:y1 - inset, x0 + inset:x1 - inset].astype(np.int16)
+    h, w = crop.shape[:2]
+    corners = np.concatenate([crop[:5, :5].reshape(-1, 3), crop[:5, -5:].reshape(-1, 3),
+                              crop[-5:, :5].reshape(-1, 3), crop[-5:, -5:].reshape(-1, 3)])
+    panel = np.median(corners, axis=0)
+    m = (np.abs(crop - panel).max(axis=2) > thr).astype(np.uint8)
+    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(m, 8)
+    if count < 2:
+        return trim(Image.fromarray(crop.astype(np.uint8)).convert("RGBA"))
+    biggest = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+    hull = cv2.convexHull(np.column_stack(np.where(labels == biggest))[:, ::-1])
+
+    super_sample = 4
+    big = np.zeros((h * super_sample, w * super_sample), np.uint8)
+    cv2.fillConvexPoly(big, (hull * super_sample).astype(np.int32), 255)
+    alpha = (cv2.resize(big, (w, h), interpolation=cv2.INTER_AREA)
+             .astype(float) / 255)[..., None]
+    out = crop * alpha + 255 * (1 - alpha)
+    return trim(Image.fromarray(out.astype(np.uint8)).convert("RGBA"))
+
+
+def trim(logo: Image.Image, white: int = 247) -> Image.Image:
+    """Drop whitened border so the fit is driven by the artwork, not the crop."""
+    a = np.asarray(logo.convert("RGB"))
+    ink = a.min(axis=2) < white
+    if not ink.any():
+        return logo
+    rows, cols = np.where(ink.any(axis=1))[0], np.where(ink.any(axis=0))[0]
+    return logo.crop((cols.min(), rows.min(), cols.max() + 1, rows.max() + 1))
 
 
 def fit(logo: Image.Image, width: int, height: int) -> Image.Image:
@@ -100,11 +164,15 @@ def main(argv=None) -> int:
         for entry in json.loads(args.manifest.read_text())["logos"]:
             sheet = sources[entry.get("source", "main")]
             x0, y0, x1, y1 = entry["box"]
-            if entry.get("key", True):
-                logo = key_out_panel(sheet, entry["box"])
+            inset = entry.get("inset", 0)
+            if entry.get("hull"):
+                logo = hull_out_panel(sheet, entry["box"], entry["hull"], inset)
+            elif entry.get("key", True):
+                logo = key_out_panel(sheet, entry["box"], inset)
             else:
                 # The badge IS a coloured block; keying would strip it away.
-                logo = Image.fromarray(sheet[y0:y1, x0:x1]).convert("RGBA")
+                logo = Image.fromarray(
+                    sheet[y0 + inset:y1 - inset, x0 + inset:x1 - inset]).convert("RGBA")
             jobs.append((entry["name"], logo))
     for src in args.inputs:
         jobs.append((args.name or src.stem, Image.open(src)))

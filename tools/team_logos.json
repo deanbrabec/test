@@ -1,5 +1,5 @@
 {
-  "_comment": "Crop boxes into the MotoGP launch graphics, as [left, top, right, bottom]. 'source' names a --source passed on the command line. Boxes are snapped to each badge's edges; panel gradient left in the corners of rounded or slanted badges is keyed out to white. 'key': false keeps the background because the badge itself is a coloured block.",
+  "_comment": "Crop boxes into the MotoGP launch graphics, as [left, top, right, bottom]. 'source' names a --source passed on the command line. Boxes are snapped to each badge's edges; panel gradient left in the corners of rounded or slanted badges is keyed out to white. 'key': false keeps the background because the badge itself is a coloured block. 'inset' trims that many pixels off each side, for badges snapped flush against the panel gradient. 'hull': N isolates a slanted badge by convex hull of everything more than N from the panel colour, for badges a flood fill cannot key.",
   "logos": [
     {
       "name": "Prima Pramac Yamaha",
@@ -9,7 +9,8 @@
         515,
         610
       ],
-      "source": "presentations"
+      "source": "presentations",
+      "inset": 2
     },
     {
       "name": "Pertamina Enduro VR46",
@@ -29,7 +30,8 @@
         1019,
         821
       ],
-      "source": "presentations"
+      "source": "presentations",
+      "inset": 2
     },
     {
       "name": "Red Bull KTM Tech3",
@@ -39,7 +41,8 @@
         1135,
         821
       ],
-      "source": "presentations"
+      "source": "presentations",
+      "inset": 2
     },
     {
       "name": "BK8 Gresini Racing",
@@ -49,7 +52,8 @@
         1102,
         1018
       ],
-      "source": "presentations"
+      "source": "presentations",
+      "inset": 1
     },
     {
       "name": "Ducati Lenovo",
@@ -59,7 +63,8 @@
         558,
         1223
       ],
-      "source": "presentations"
+      "source": "presentations",
+      "inset": 2
     },
     {
       "name": "Monster Energy Yamaha",
@@ -69,7 +74,8 @@
         516,
         1440
       ],
-      "source": "presentations"
+      "source": "presentations",
+      "inset": 2
     },
     {
       "name": "Honda HRC Castrol",
@@ -79,7 +85,8 @@
         1116,
         1428
       ],
-      "source": "presentations"
+      "source": "presentations",
+      "hull": 85
     },
     {
       "name": "Aprilia Racing",

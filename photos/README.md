@@ -118,12 +118,17 @@ python3 tools/prepare_logos.py --manifest tools/team_logos.json \
 ```
 
 `tools/team_logos.json` holds one crop box per badge, each naming the source
-graphic it came from. Badges that are rounded or slanted keep some of the
-graphic's panel gradient inside their bounding box, so each corner is
-flood-filled to white — but only when that corner matches the panel colour just
-outside the badge, otherwise a badge with a pale block in its own corner
-(Gresini's title bar) would be eaten too. Entries with `"key": false` skip that
-step because the badge itself is a coloured block.
+graphic it came from, plus how that badge should be separated from the panel
+behind it:
+
+| Field | Effect |
+|---|---|
+| *(default)* | Flood-fill each corner, then fade the filled region towards white by how close each pixel is to the backdrop colour. The fade is what keeps edges clean — painting the region flat white leaves the staircase edge of a binary mask and strips the antialiased fringe that makes small artwork read. It also clears compression mottling from a flat background, which is what Aprilia needed. A corner is only filled when it matches the panel just outside the badge, so a badge with a pale block in its own corner (Gresini's title bar) is not eaten. |
+| `"inset": N` | Trim N px off each side first, for badges snapped flush against the panel gradient — without it KTM and Pramac keep a 2 px strip of it. |
+| `"hull": N` | Isolate the badge by the convex hull of everything more than N from the panel colour, and whiten outside it. For Honda, whose slanted badge sits on an out-of-focus panel of its own hue: no flood tolerance works, one low enough to spare the badge leaves a halo and one high enough to clear it bleeds inside. The polygon is rasterised at 4× and boxed down so its edge is antialiased. |
+| `"key": false` | Skip all of it — the badge itself is a coloured block. |
+
+Every tile's outer ring verifies as pure white.
 
 | File (`@2x` / `@3x`) | Team | Riders |
 |---|---|---|
