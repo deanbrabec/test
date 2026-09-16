@@ -11,7 +11,6 @@
       "country": "Thailand",
       "country_code": "TH",
       "length_km": 4.554,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/thailand.svg"
     },
@@ -23,7 +22,6 @@
       "country": "Brazil",
       "country_code": "BR",
       "length_km": 3.835,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/brazil.svg"
     },
@@ -35,7 +33,6 @@
       "country": "United States",
       "country_code": "US",
       "length_km": 5.513,
-      "type": "Permanent",
       "direction": "Anti-clockwise",
       "map": "maps/motogp/circuits/united_states.svg"
     },
@@ -47,7 +44,6 @@
       "country": "Qatar",
       "country_code": "QA",
       "length_km": 5.419,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/qatar.svg"
     },
@@ -59,7 +55,6 @@
       "country": "Spain",
       "country_code": "ES",
       "length_km": 4.423,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/spain.svg"
     },
@@ -71,7 +66,6 @@
       "country": "France",
       "country_code": "FR",
       "length_km": 4.185,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/france.svg"
     },
@@ -83,7 +77,6 @@
       "country": "Spain",
       "country_code": "ES",
       "length_km": 4.657,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/catalunya.svg"
     },
@@ -95,7 +88,6 @@
       "country": "Italy",
       "country_code": "IT",
       "length_km": 5.245,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/italy.svg"
     },
@@ -107,7 +99,6 @@
       "country": "Hungary",
       "country_code": "HU",
       "length_km": 4.075,
-      "type": "Permanent",
       "direction": "Anti-clockwise",
       "map": "maps/motogp/circuits/hungary.svg"
     },
@@ -119,7 +110,6 @@
       "country": "Czech Republic",
       "country_code": "CZ",
       "length_km": 5.403,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/czech_republic.svg"
     },
@@ -131,7 +121,6 @@
       "country": "Netherlands",
       "country_code": "NL",
       "length_km": 4.542,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/netherlands.svg"
     },
@@ -143,7 +132,6 @@
       "country": "Germany",
       "country_code": "DE",
       "length_km": 3.671,
-      "type": "Permanent",
       "direction": "Anti-clockwise",
       "map": "maps/motogp/circuits/germany.svg"
     },
@@ -155,7 +143,6 @@
       "country": "United Kingdom",
       "country_code": "GB",
       "length_km": 5.9,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/great_britain.svg"
     },
@@ -167,7 +154,6 @@
       "country": "Spain",
       "country_code": "ES",
       "length_km": 5.077,
-      "type": "Permanent",
       "direction": "Anti-clockwise",
       "map": "maps/motogp/circuits/aragon.svg"
     },
@@ -179,7 +165,6 @@
       "country": "Italy",
       "country_code": "IT",
       "length_km": 4.226,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/san_marino.svg"
     },
@@ -191,7 +176,6 @@
       "country": "Austria",
       "country_code": "AT",
       "length_km": 4.318,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/austria.svg"
     },
@@ -203,7 +187,6 @@
       "country": "Japan",
       "country_code": "JP",
       "length_km": 4.801,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/japan.svg"
     },
@@ -215,7 +198,6 @@
       "country": "Indonesia",
       "country_code": "ID",
       "length_km": 4.319,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/indonesia.svg"
     },
@@ -227,7 +209,6 @@
       "country": "Australia",
       "country_code": "AU",
       "length_km": 4.448,
-      "type": "Permanent",
       "direction": "Anti-clockwise",
       "map": "maps/motogp/circuits/australia.svg"
     },
@@ -239,7 +220,6 @@
       "country": "Malaysia",
       "country_code": "MY",
       "length_km": 5.543,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/malaysia.svg"
     },
@@ -251,7 +231,6 @@
       "country": "Portugal",
       "country_code": "PT",
       "length_km": 4.592,
-      "type": "Permanent",
       "direction": "Clockwise",
       "map": "maps/motogp/circuits/portugal.svg"
     },
@@ -263,7 +242,6 @@
       "country": "Spain",
       "country_code": "ES",
       "length_km": 4.005,
-      "type": "Permanent",
       "direction": "Anti-clockwise",
       "map": "maps/motogp/circuits/valencia.svg"
     }
