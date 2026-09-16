@@ -104,15 +104,19 @@ width, its tallest 0.86 of the height).
 
 ```bash
 python3 tools/prepare_logos.py --manifest tools/team_logos.json \
-    --source <team-presentations-graphic> -o photos/motogp/teams
+    --source presentations=<2026-team-presentations.webp> \
+    --source launches2025=<2025-team-launches.jpg> \
+    --source launch2026=<2026-launch-dates.jpg> \
+    -o photos/motogp/teams
 ```
 
-Sources are cropped out of the official 2026 team-presentations graphic;
-`tools/team_logos.json` holds one crop box per badge. Badges that are rounded
-or slanted keep some of the graphic's panel gradient inside their bounding box,
-so each corner is flood-filled to white — but only when that corner matches the
-panel colour just outside the badge, otherwise a badge with a pale block in its
-own corner (Gresini's title bar) would be eaten too.
+`tools/team_logos.json` holds one crop box per badge, each naming the source
+graphic it came from. Badges that are rounded or slanted keep some of the
+graphic's panel gradient inside their bounding box, so each corner is
+flood-filled to white — but only when that corner matches the panel colour just
+outside the badge, otherwise a badge with a pale block in its own corner
+(Gresini's title bar) would be eaten too. Entries with `"key": false` skip that
+step because the badge itself is a coloured block.
 
 | File (`@2x` / `@3x`) | Team | Riders |
 |---|---|---|
@@ -128,17 +132,27 @@ own corner (Gresini's title bar) would be eaten too.
 | `lcr_honda` | LCR Honda (Castrol / Pro) | 5, 11 |
 | `trackhouse` | SuperFile Trackhouse MotoGP Team | 25, 79 |
 
-### Missing: Aprilia, LCR and Trackhouse
+### Source quality
 
-Eight of the eleven are present. The other three are not in this folder yet
-because the presentation graphic does not contain a usable logo for them: where
-the other teams have a self-contained badge, these three are set as bare
-wordmarks in **white ink** over a photographed bike fairing. There is no badge
-to crop, the white lettering would disappear against a white tile, and the
-gradient behind it is the graphic's own artwork rather than any team colour.
-They need proper logo files (a press-kit PNG/SVG on a light background), which
-drop straight in:
+Nine of the eleven are downscaled from a source larger than the tile. Two are
+not, and are visibly soft:
+
+| File | Source | @3x scale |
+|---|---|---|
+| `lcr_honda` | 2026 launch-dates graphic | 1.10× upscale |
+| `trackhouse` | 2026 launch-dates graphic | 1.24× upscale |
+
+Both come from small tiles in the launch-dates graphic, which is the only
+source here that carries them at all — the team-presentations graphic sets
+Aprilia, LCR and Trackhouse as white wordmarks over a photographed fairing,
+with no badge to crop and lettering that would vanish on a white tile. Aprilia
+was recovered from the 2025 launches graphic, where it is set in black on a
+light background, and needs no upscaling.
+
+`lcr_honda` and `trackhouse` also keep their launch-graphic backgrounds (silver
+and blue), which are that graphic's styling rather than team colours. Press-kit
+files for those two would improve both problems at once:
 
 ```bash
-python3 tools/prepare_logos.py aprilia.png --name "Aprilia Racing"
+python3 tools/prepare_logos.py trackhouse.png --name "Trackhouse"
 ```

@@ -7,7 +7,8 @@ centred on white, which is how the F1 team logos are laid out.
 
 Usage:
     python3 tools/prepare_logos.py --manifest tools/team_logos.json \\
-        --source <graphic.webp> -o photos/motogp/teams
+        --source presentations=<graphic.webp> \\
+        --source launch2026=<graphic.jpg> -o photos/motogp/teams
     python3 tools/prepare_logos.py logo.png --name "Ducati Lenovo"
 """
 import argparse
@@ -74,8 +75,9 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("inputs", nargs="*", type=Path, help="standalone logo files")
-    p.add_argument("--manifest", type=Path, help="JSON of crop boxes into --source")
-    p.add_argument("--source", type=Path, help="image the manifest boxes refer to")
+    p.add_argument("--manifest", type=Path, help="JSON of crop boxes into the sources")
+    p.add_argument("--source", action="append", default=[], metavar="NAME=PATH",
+                   help="a source image the manifest refers to; repeatable")
     p.add_argument("-o", "--out-dir", type=Path, default=Path("photos/motogp/teams"))
     p.add_argument("--pt-width", type=int, default=36)
     p.add_argument("--pt-height", type=int, default=25)
@@ -84,15 +86,26 @@ def main(argv=None) -> int:
     args = p.parse_args(argv)
 
     if args.manifest and not args.source:
-        p.error("--manifest needs --source")
+        p.error("--manifest needs at least one --source")
+    sources = {}
+    for spec in args.source:
+        name, _, path = spec.partition("=")
+        sources[name if path else "main"] = np.asarray(
+            Image.open(path or name).convert("RGB"))
     if args.name and len(args.inputs) != 1:
         p.error("--name takes exactly one input file")
 
     jobs = []
     if args.manifest:
-        sheet = np.asarray(Image.open(args.source).convert("RGB"))
         for entry in json.loads(args.manifest.read_text())["logos"]:
-            jobs.append((entry["name"], key_out_panel(sheet, entry["box"])))
+            sheet = sources[entry.get("source", "main")]
+            x0, y0, x1, y1 = entry["box"]
+            if entry.get("key", True):
+                logo = key_out_panel(sheet, entry["box"])
+            else:
+                # The badge IS a coloured block; keying would strip it away.
+                logo = Image.fromarray(sheet[y0:y1, x0:x1]).convert("RGBA")
+            jobs.append((entry["name"], logo))
     for src in args.inputs:
         jobs.append((args.name or src.stem, Image.open(src)))
 

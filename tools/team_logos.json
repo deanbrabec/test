@@ -1,5 +1,5 @@
 {
-  "_comment": "Crop boxes into the official 2026 MotoGP team-presentations graphic, as [left, top, right, bottom]. Boxes are snapped to each badge's edges; the panel gradient left in the corners of rounded or slanted badges is keyed out to white by prepare_logos.py.",
+  "_comment": "Crop boxes into the MotoGP launch graphics, as [left, top, right, bottom]. 'source' names a --source passed on the command line. Boxes are snapped to each badge's edges; panel gradient left in the corners of rounded or slanted badges is keyed out to white. 'key': false keeps the background because the badge itself is a coloured block.",
   "logos": [
     {
       "name": "Prima Pramac Yamaha",
@@ -8,7 +8,8 @@
         472,
         515,
         610
-      ]
+      ],
+      "source": "presentations"
     },
     {
       "name": "Pertamina Enduro VR46",
@@ -17,7 +18,8 @@
         700,
         566,
         796
-      ]
+      ],
+      "source": "presentations"
     },
     {
       "name": "Red Bull KTM Factory Racing",
@@ -26,7 +28,8 @@
         676,
         1019,
         821
-      ]
+      ],
+      "source": "presentations"
     },
     {
       "name": "Red Bull KTM Tech3",
@@ -35,7 +38,8 @@
         676,
         1135,
         821
-      ]
+      ],
+      "source": "presentations"
     },
     {
       "name": "BK8 Gresini Racing",
@@ -44,7 +48,8 @@
         892,
         1102,
         1018
-      ]
+      ],
+      "source": "presentations"
     },
     {
       "name": "Ducati Lenovo",
@@ -53,7 +58,8 @@
         1101,
         558,
         1223
-      ]
+      ],
+      "source": "presentations"
     },
     {
       "name": "Monster Energy Yamaha",
@@ -62,7 +68,8 @@
         1296,
         516,
         1440
-      ]
+      ],
+      "source": "presentations"
     },
     {
       "name": "Honda HRC Castrol",
@@ -71,7 +78,40 @@
         1307,
         1116,
         1428
+      ],
+      "source": "presentations"
+    },
+    {
+      "name": "Aprilia Racing",
+      "source": "launches2025",
+      "box": [
+        40,
+        141,
+        146,
+        193
       ]
+    },
+    {
+      "name": "LCR Honda",
+      "source": "launch2026",
+      "box": [
+        96,
+        382,
+        188,
+        430
+      ],
+      "key": false
+    },
+    {
+      "name": "Trackhouse",
+      "source": "launch2026",
+      "box": [
+        283,
+        195,
+        355,
+        247
+      ],
+      "key": false
     }
   ]
 }
