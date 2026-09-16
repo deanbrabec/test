@@ -1,0 +1,135 @@
+{
+  "_comment": "Crop boxes into the MotoGP launch graphics, as [left, top, right, bottom]. 'source' names a --source passed on the command line. Boxes are snapped to each badge's edges; panel gradient left in the corners of rounded or slanted badges is keyed out to white. 'key': false keeps the background because the badge itself is a coloured block. 'inset' trims that many pixels off each side, for badges snapped flush against the panel gradient. 'hull': N isolates a slanted badge by convex hull of everything more than N from the panel colour, for badges a flood fill cannot key.",
+  "logos": [
+    {
+      "name": "Prima Pramac Yamaha",
+      "box": [
+        382,
+        472,
+        515,
+        610
+      ],
+      "source": "presentations",
+      "inset": 2
+    },
+    {
+      "name": "Pertamina Enduro VR46",
+      "box": [
+        345,
+        700,
+        566,
+        796
+      ],
+      "source": "presentations"
+    },
+    {
+      "name": "Red Bull KTM Factory Racing",
+      "box": [
+        905,
+        676,
+        1019,
+        821
+      ],
+      "source": "presentations",
+      "inset": 2
+    },
+    {
+      "name": "Red Bull KTM Tech3",
+      "box": [
+        1026,
+        676,
+        1135,
+        821
+      ],
+      "source": "presentations",
+      "inset": 2
+    },
+    {
+      "name": "BK8 Gresini Racing",
+      "box": [
+        950,
+        892,
+        1102,
+        1018
+      ],
+      "source": "presentations",
+      "inset": 1
+    },
+    {
+      "name": "Ducati Lenovo",
+      "box": [
+        354,
+        1101,
+        558,
+        1223
+      ],
+      "source": "presentations",
+      "inset": 2
+    },
+    {
+      "name": "Monster Energy Yamaha",
+      "box": [
+        386,
+        1296,
+        516,
+        1440
+      ],
+      "source": "presentations",
+      "inset": 2
+    },
+    {
+      "name": "Honda HRC Castrol",
+      "box": [
+        932,
+        1307,
+        1116,
+        1428
+      ],
+      "source": "presentations",
+      "hull": 85
+    },
+    {
+      "name": "Aprilia Racing",
+      "source": "launches2025",
+      "box": [
+        40,
+        141,
+        146,
+        193
+      ]
+    },
+    {
+      "name": "CASTROL Honda LCR",
+      "source": "launch2026",
+      "box": [
+        96,
+        382,
+        188,
+        430
+      ],
+      "key": false
+    },
+    {
+      "name": "Pro Honda LCR",
+      "source": "launch2026",
+      "box": [
+        96,
+        382,
+        188,
+        430
+      ],
+      "key": false
+    },
+    {
+      "name": "Trackhouse",
+      "source": "launch2026",
+      "box": [
+        283,
+        195,
+        355,
+        247
+      ],
+      "key": false
+    }
+  ]
+}

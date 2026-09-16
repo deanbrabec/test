@@ -1,0 +1,249 @@
+{
+  "series": "MotoGP",
+  "season": 2026,
+  "_note": "length_km is the layout MotoGP races, which differs from the venue's other configurations at Lusail (5.419 not 5.380) and Balaton Park (4.075 not 4.115). grand_prix is the event name, which is not always the circuit's country: the San Marino GP runs at Misano in Italy, and the Catalunya, Aragon and Valencia GPs all run in Spain.",
+  "circuits": [
+    {
+      "id": "thailand",
+      "round": 1,
+      "grand_prix": "Thailand",
+      "circuit": "Chang International Circuit",
+      "country": "Thailand",
+      "country_code": "TH",
+      "length_km": 4.554,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/thailand.svg"
+    },
+    {
+      "id": "brazil",
+      "round": 2,
+      "grand_prix": "Brazil",
+      "circuit": "Autódromo Internacional Ayrton Senna",
+      "country": "Brazil",
+      "country_code": "BR",
+      "length_km": 3.835,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/brazil.svg"
+    },
+    {
+      "id": "united_states",
+      "round": 3,
+      "grand_prix": "United States",
+      "circuit": "Circuit of the Americas",
+      "country": "United States",
+      "country_code": "US",
+      "length_km": 5.513,
+      "direction": "Anti-clockwise",
+      "map": "maps/motogp/circuits/united_states.svg"
+    },
+    {
+      "id": "qatar",
+      "round": 4,
+      "grand_prix": "Qatar",
+      "circuit": "Lusail International Circuit",
+      "country": "Qatar",
+      "country_code": "QA",
+      "length_km": 5.419,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/qatar.svg"
+    },
+    {
+      "id": "spain",
+      "round": 5,
+      "grand_prix": "Spain",
+      "circuit": "Circuito de Jerez – Ángel Nieto",
+      "country": "Spain",
+      "country_code": "ES",
+      "length_km": 4.423,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/spain.svg"
+    },
+    {
+      "id": "france",
+      "round": 6,
+      "grand_prix": "France",
+      "circuit": "Bugatti Circuit",
+      "country": "France",
+      "country_code": "FR",
+      "length_km": 4.185,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/france.svg"
+    },
+    {
+      "id": "catalunya",
+      "round": 7,
+      "grand_prix": "Catalunya",
+      "circuit": "Circuit de Barcelona-Catalunya",
+      "country": "Spain",
+      "country_code": "ES",
+      "length_km": 4.657,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/catalunya.svg"
+    },
+    {
+      "id": "italy",
+      "round": 8,
+      "grand_prix": "Italy",
+      "circuit": "Autodromo Internazionale del Mugello",
+      "country": "Italy",
+      "country_code": "IT",
+      "length_km": 5.245,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/italy.svg"
+    },
+    {
+      "id": "hungary",
+      "round": 9,
+      "grand_prix": "Hungary",
+      "circuit": "Balaton Park Circuit",
+      "country": "Hungary",
+      "country_code": "HU",
+      "length_km": 4.075,
+      "direction": "Anti-clockwise",
+      "map": "maps/motogp/circuits/hungary.svg"
+    },
+    {
+      "id": "czech_republic",
+      "round": 10,
+      "grand_prix": "Czech Republic",
+      "circuit": "Automotodrom Brno",
+      "country": "Czech Republic",
+      "country_code": "CZ",
+      "length_km": 5.403,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/czech_republic.svg"
+    },
+    {
+      "id": "netherlands",
+      "round": 11,
+      "grand_prix": "Netherlands",
+      "circuit": "TT Circuit Assen",
+      "country": "Netherlands",
+      "country_code": "NL",
+      "length_km": 4.542,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/netherlands.svg"
+    },
+    {
+      "id": "germany",
+      "round": 12,
+      "grand_prix": "Germany",
+      "circuit": "Sachsenring",
+      "country": "Germany",
+      "country_code": "DE",
+      "length_km": 3.671,
+      "direction": "Anti-clockwise",
+      "map": "maps/motogp/circuits/germany.svg"
+    },
+    {
+      "id": "great_britain",
+      "round": 13,
+      "grand_prix": "Great Britain",
+      "circuit": "Silverstone Circuit",
+      "country": "United Kingdom",
+      "country_code": "GB",
+      "length_km": 5.9,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/great_britain.svg"
+    },
+    {
+      "id": "aragon",
+      "round": 14,
+      "grand_prix": "Aragon",
+      "circuit": "MotorLand Aragón",
+      "country": "Spain",
+      "country_code": "ES",
+      "length_km": 5.077,
+      "direction": "Anti-clockwise",
+      "map": "maps/motogp/circuits/aragon.svg"
+    },
+    {
+      "id": "san_marino",
+      "round": 15,
+      "grand_prix": "San Marino",
+      "circuit": "Misano World Circuit Marco Simoncelli",
+      "country": "Italy",
+      "country_code": "IT",
+      "length_km": 4.226,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/san_marino.svg"
+    },
+    {
+      "id": "austria",
+      "round": 16,
+      "grand_prix": "Austria",
+      "circuit": "Red Bull Ring",
+      "country": "Austria",
+      "country_code": "AT",
+      "length_km": 4.318,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/austria.svg"
+    },
+    {
+      "id": "japan",
+      "round": 17,
+      "grand_prix": "Japan",
+      "circuit": "Mobility Resort Motegi",
+      "country": "Japan",
+      "country_code": "JP",
+      "length_km": 4.801,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/japan.svg"
+    },
+    {
+      "id": "indonesia",
+      "round": 18,
+      "grand_prix": "Indonesia",
+      "circuit": "Pertamina Mandalika International Circuit",
+      "country": "Indonesia",
+      "country_code": "ID",
+      "length_km": 4.319,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/indonesia.svg"
+    },
+    {
+      "id": "australia",
+      "round": 19,
+      "grand_prix": "Australia",
+      "circuit": "Phillip Island Grand Prix Circuit",
+      "country": "Australia",
+      "country_code": "AU",
+      "length_km": 4.448,
+      "direction": "Anti-clockwise",
+      "map": "maps/motogp/circuits/australia.svg"
+    },
+    {
+      "id": "malaysia",
+      "round": 20,
+      "grand_prix": "Malaysia",
+      "circuit": "Sepang International Circuit",
+      "country": "Malaysia",
+      "country_code": "MY",
+      "length_km": 5.543,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/malaysia.svg"
+    },
+    {
+      "id": "portugal",
+      "round": 21,
+      "grand_prix": "Portugal",
+      "circuit": "Autódromo Internacional do Algarve",
+      "country": "Portugal",
+      "country_code": "PT",
+      "length_km": 4.592,
+      "direction": "Clockwise",
+      "map": "maps/motogp/circuits/portugal.svg"
+    },
+    {
+      "id": "valencia",
+      "round": 22,
+      "grand_prix": "Valencia",
+      "circuit": "Circuit Ricardo Tormo",
+      "country": "Spain",
+      "country_code": "ES",
+      "length_km": 4.005,
+      "direction": "Anti-clockwise",
+      "map": "maps/motogp/circuits/valencia.svg"
+    }
+  ]
+}
