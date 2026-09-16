@@ -66,3 +66,37 @@ corners; nothing else about the shapes would change.
 
 The traces carry the outline only. The start/finish marker and the sector
 colouring visible in the app's F1 maps are not in this source.
+
+## Circuit data
+
+`maps/motogp/circuits.json` carries the three facts the race detail screen
+shows — length, circuit type and direction — plus the circuit name, country and
+the path to its SVG. One entry per circuit, `id` matching the SVG filename:
+
+```json
+{
+  "id": "thailand",
+  "round": 1,
+  "grand_prix": "Thailand",
+  "circuit": "Chang International Circuit",
+  "country": "Thailand",
+  "country_code": "TH",
+  "length_km": 4.554,
+  "type": "Permanent",
+  "direction": "Clockwise",
+  "map": "maps/motogp/circuits/thailand.svg"
+}
+```
+
+Three things worth knowing about the data:
+
+- **`length_km` is the layout MotoGP races**, which is not always the venue's
+  headline figure. Lusail is 5.419 km on the current layout, not the 5.380 km
+  of the 2004–2022 one; Balaton Park's motorcycle layout is 4.075 km, not the
+  4.115 km full circuit.
+- **`type` is `Permanent` for all 22.** No 2026 MotoGP round is a street
+  circuit, so unlike the F1 list this field never varies.
+- **`grand_prix` is the event name, not always the circuit's country.** The San
+  Marino GP runs at Misano in Italy, and the Catalunya, Aragon and Valencia GPs
+  all run in Spain. `country` / `country_code` give where the circuit actually
+  is; use `grand_prix` for the label and flag the calendar uses.
