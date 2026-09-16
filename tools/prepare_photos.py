@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Crop and resize driver photos to the app's thumbnail spec.
+"""Crop and resize rider/driver photos to the app's thumbnail spec.
 
-Default output: 72x50 px PNG (36x25 pt @2x), named name_surname.png.
+Output: 72x50 px PNG (36x25 pt @2x), named name_surname.png.
+
+The crop reproduces the framing used by the existing F1 "Select driver" list:
+the head sits centred in a wide white box, top of the head ~6% down from the
+top edge, chin at ~40%, shoulders running off the bottom edge. Source photos
+are expected to be studio shots on a white backdrop, which lets the crop box
+extend past the image edge and be padded with white rather than clamped.
 
 Usage:
-    python3 tools/prepare_photos.py <input...> -o photos/motogp/drivers
-    python3 tools/prepare_photos.py /root/.claude/uploads/*.jpg -o photos/motogp/drivers
-
-Each input file is center-cropped to the target aspect ratio (vertical anchor
-biased toward the top so faces stay in frame), resized with Lanczos, and saved
-as PNG. The output name is derived from the input filename unless --name is
-given for a single file.
+    python3 tools/prepare_photos.py <image>... -o photos/motogp/drivers
+    python3 tools/prepare_photos.py rider.webp --name "Marc Marquez"
 """
 import argparse
 import re
@@ -18,67 +19,94 @@ import sys
 import unicodedata
 from pathlib import Path
 
+import cv2
+import numpy as np
 from PIL import Image
+
+# Framing constants, measured off the F1 reference screenshot.
+HEAD_TOP = 0.02   # top of head, as a fraction of output height
+CHIN = 0.68       # chin, as a fraction of output height
+WHITE_CUTOFF = 235  # below this on any channel counts as subject, not backdrop
 
 
 def slugify(value: str) -> str:
-    """'Marc Márquez' / 'Marc-Marquez.JPG' -> 'marc_marquez'."""
+    """'Marc Márquez' / 'Marc-Marquez.WEBP' -> 'marc_marquez'."""
     value = unicodedata.normalize("NFKD", value)
     value = "".join(c for c in value if not unicodedata.combining(c))
-    value = value.lower()
-    value = re.sub(r"[^a-z0-9]+", "_", value)
-    return value.strip("_")
+    return re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
 
 
-def crop_resize(img: Image.Image, width: int, height: int, focus: float) -> Image.Image:
-    img = img.convert("RGBA")
-    target = width / height
-    src = img.width / img.height
+def find_head(rgb: np.ndarray):
+    """Return (head_top_y, chin_y, face_centre_x) in source pixels."""
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+    cascade = cv2.CascadeClassifier(
+        cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    faces = cascade.detectMultiScale(gray, 1.05, 6, minSize=(40, 40))
+    if len(faces) == 0:
+        raise ValueError("no face detected")
+    # Studio portraits put the head at the top; logos on leathers can also
+    # trip the detector, so take the highest box.
+    fx, fy, fw, fh = min(faces, key=lambda b: b[1])
+    cx, chin = fx + fw / 2, fy + fh
 
-    if src > target:  # too wide -> trim sides, keep the centre
-        new_w = round(img.height * target)
-        left = (img.width - new_w) // 2
-        box = (left, 0, left + new_w, img.height)
-    else:  # too tall -> trim top/bottom, anchored by `focus`
-        new_h = round(img.width / target)
-        top = round((img.height - new_h) * focus)
-        top = max(0, min(top, img.height - new_h))
-        box = (0, top, img.width, top + new_h)
+    # Top of the head (hair or cap) from the subject silhouette, limited to a
+    # column around the face so a raised elbow or shoulder can't win.
+    subject = rgb.min(axis=2) < WHITE_CUTOFF
+    lo, hi = int(max(0, cx - fw * 0.7)), int(min(rgb.shape[1], cx + fw * 0.7))
+    rows = np.where(subject[:, lo:hi].any(axis=1))[0]
+    head_top = float(rows.min()) if len(rows) else float(fy)
+    return head_top, float(chin), float(cx)
 
-    return img.crop(box).resize((width, height), Image.LANCZOS)
+
+def thumbnail(rgb: np.ndarray, width: int, height: int) -> Image.Image:
+    head_top, chin, cx = find_head(rgb)
+
+    crop_h = (chin - head_top) / (CHIN - HEAD_TOP)
+    crop_w = crop_h * width / height
+    top = head_top - HEAD_TOP * crop_h
+    left = cx - crop_w / 2
+
+    # Paste onto a white canvas so a crop box running off the source edge is
+    # padded with backdrop instead of shifting the framing.
+    canvas = Image.new("RGB", (round(crop_w), round(crop_h)), "white")
+    src = Image.fromarray(rgb)
+    canvas.paste(src, (round(-left), round(-top)))
+    return canvas.resize((width, height), Image.LANCZOS)
 
 
 def main(argv=None) -> int:
-    p = argparse.ArgumentParser(description=__doc__,
-                                formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("inputs", nargs="+", type=Path, help="source image files")
     p.add_argument("-o", "--out-dir", type=Path, default=Path("photos/motogp/drivers"))
-    p.add_argument("--width", type=int, default=72, help="output width in px (default 72 = 36pt @2x)")
-    p.add_argument("--height", type=int, default=50, help="output height in px (default 50 = 25pt @2x)")
-    p.add_argument("--focus", type=float, default=0.3,
-                   help="vertical crop anchor, 0=top 1=bottom (default 0.3, keeps faces in frame)")
+    p.add_argument("--width", type=int, default=72, help="output width px (default 72 = 36pt @2x)")
+    p.add_argument("--height", type=int, default=50, help="output height px (default 50 = 25pt @2x)")
     p.add_argument("--name", help="output name for a single input, e.g. 'Marc Marquez'")
     args = p.parse_args(argv)
 
     if args.name and len(args.inputs) > 1:
         p.error("--name only works with a single input file")
-
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
+    failed = 0
     for src in args.inputs:
-        if not src.is_file():
-            print(f"skip (not a file): {src}", file=sys.stderr)
-            continue
         name = slugify(args.name or src.stem)
-        if not name:
-            print(f"skip (cannot derive a name): {src}", file=sys.stderr)
+        if not src.is_file() or not name:
+            print(f"skip: {src}", file=sys.stderr)
+            failed += 1
+            continue
+        rgb = np.array(Image.open(src).convert("RGB"))
+        try:
+            out = thumbnail(rgb, args.width, args.height)
+        except ValueError as exc:
+            print(f"skip {src}: {exc}", file=sys.stderr)
+            failed += 1
             continue
         dst = args.out_dir / f"{name}.png"
-        with Image.open(src) as img:
-            crop_resize(img, args.width, args.height, args.focus).save(dst, "PNG", optimize=True)
-        print(f"{src} -> {dst} ({args.width}x{args.height})")
+        out.save(dst, "PNG", optimize=True)
+        print(f"{src.name} -> {dst} ({args.width}x{args.height})")
 
-    return 0
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
