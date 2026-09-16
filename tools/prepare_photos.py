@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Crop and resize rider/driver photos to the app's thumbnail spec.
 
-Output: 72x50 px PNG (36x25 pt @2x), named name_surname.png.
+Output: 36x25 pt PNGs at each requested scale, named name_surname@2x.png,
+name_surname@3x.png and so on.
 
 The crop reproduces the framing used by the existing F1 "Select driver" list:
 the head sits centred in a wide white box, top of the head ~6% down from the
@@ -13,6 +14,7 @@ extend past the image edge and be padded seamlessly rather than clamped.
 Usage:
     python3 tools/prepare_photos.py <image>... -o photos/motogp/drivers
     python3 tools/prepare_photos.py rider.webp --name "Marc Marquez"
+    python3 tools/prepare_photos.py rider.webp --scales 1 2 3
 """
 import argparse
 import re
@@ -76,20 +78,20 @@ def find_head(rgb: np.ndarray, subject: np.ndarray):
     return head_top, float(chin), float(cx)
 
 
-def thumbnail(rgb: np.ndarray, subject: np.ndarray, width: int, height: int) -> Image.Image:
+def crop(rgb: np.ndarray, subject: np.ndarray, aspect: float) -> Image.Image:
+    """Crop to `aspect` (w/h) with the head on the reference framing."""
     head_top, chin, cx = find_head(rgb, subject)
 
     crop_h = (chin - head_top) / (CHIN - HEAD_TOP)
-    crop_w = crop_h * width / height
+    crop_w = crop_h * aspect
     top = head_top - HEAD_TOP * crop_h
     left = cx - crop_w / 2
 
     # Paste onto a white canvas so a crop box running off the source edge is
     # padded with backdrop instead of shifting the framing.
     canvas = Image.new("RGB", (round(crop_w), round(crop_h)), "white")
-    src = Image.fromarray(rgb)
-    canvas.paste(src, (round(-left), round(-top)))
-    return canvas.resize((width, height), Image.LANCZOS)
+    canvas.paste(Image.fromarray(rgb), (round(-left), round(-top)))
+    return canvas
 
 
 def main(argv=None) -> int:
@@ -97,14 +99,17 @@ def main(argv=None) -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("inputs", nargs="+", type=Path, help="source image files")
     p.add_argument("-o", "--out-dir", type=Path, default=Path("photos/motogp/drivers"))
-    p.add_argument("--width", type=int, default=72, help="output width px (default 72 = 36pt @2x)")
-    p.add_argument("--height", type=int, default=50, help="output height px (default 50 = 25pt @2x)")
+    p.add_argument("--pt-width", type=int, default=36, help="display width in pt (default 36)")
+    p.add_argument("--pt-height", type=int, default=25, help="display height in pt (default 25)")
+    p.add_argument("--scales", type=int, nargs="+", default=[2, 3],
+                   help="pixel scales to emit (default: 2 3)")
     p.add_argument("--name", help="output name for a single input, e.g. 'Marc Marquez'")
     args = p.parse_args(argv)
 
     if args.name and len(args.inputs) > 1:
         p.error("--name only works with a single input file")
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    aspect = args.pt_width / args.pt_height
 
     failed = 0
     for src in args.inputs:
@@ -115,14 +120,21 @@ def main(argv=None) -> int:
             continue
         rgb, subject = load(src)
         try:
-            out = thumbnail(rgb, subject, args.width, args.height)
+            box = crop(rgb, subject, aspect)
         except ValueError as exc:
             print(f"skip {src}: {exc}", file=sys.stderr)
             failed += 1
             continue
-        dst = args.out_dir / f"{name}.png"
-        out.save(dst, "PNG", optimize=True)
-        print(f"{src.name} -> {dst} ({args.width}x{args.height})")
+        sizes = []
+        for scale in args.scales:
+            w, h = args.pt_width * scale, args.pt_height * scale
+            if box.width < w:
+                print(f"warning: {name}@{scale}x upscales "
+                      f"({box.width}px crop -> {w}px)", file=sys.stderr)
+            box.resize((w, h), Image.LANCZOS).save(
+                args.out_dir / f"{name}@{scale}x.png", "PNG", optimize=True)
+            sizes.append(f"@{scale}x {w}x{h}")
+        print(f"{src.name} -> {name}  " + ", ".join(sizes))
 
     return 1 if failed else 0
 

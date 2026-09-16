@@ -17,9 +17,9 @@ Formula 1 lives alongside this once its assets land (`photos/f1/drivers/`).
 | | |
 |---|---|
 | Display size | 36 × 25 pt |
-| File size | **72 × 50 px** (@2x) |
+| File sizes | **72 × 50 px** (@2x) and **108 × 75 px** (@3x) |
 | Format | PNG |
-| Filename | `name_surname.png` — lowercase, ASCII, underscore separated |
+| Filename | `name_surname@2x.png` / `name_surname@3x.png` — lowercase, ASCII, underscore separated |
 | Framing | Head-and-shoulders, same crop style as the F1 list |
 | Background | White; transparent sources are flattened onto it |
 
@@ -47,6 +47,12 @@ Drop the source images anywhere and run:
 python3 tools/prepare_photos.py <source-images...> -o photos/motogp/drivers
 ```
 
+Both scales are written from a single crop box, so @2x and @3x are the same
+framing at different resolutions. Add or change scales with `--scales 1 2 3`;
+the script warns if a requested scale would upscale the source. The official
+press shots are 1000 × 700, which leaves the tightest crop a 3.3× downscale at
+@3x — no upscaling anywhere in the current set.
+
 The script locates the face, sizes the crop so the head lands on the framing
 rule above, centres it horizontally, resizes with Lanczos and writes an
 optimized PNG. Because the sources are studio shots on white, a crop box that
@@ -61,27 +67,27 @@ Requires `pip install Pillow numpy "opencv-python-headless<5"`.
 
 All 22 from the official MotoGP entry list, source photos from motogp.com.
 
-| File | # | Rider | Country | Team |
+| File (`@2x` / `@3x`) | # | Rider | Country | Team |
 |---|---|---|---|---|
-| `johann_zarco.png` | 5 | Johann Zarco | France | CASTROL Honda LCR |
-| `toprak_razgatlioglu.png` | 7 | Toprak Razgatlıoğlu | Türkiye | Prima Pramac Yamaha MotoGP |
-| `luca_marini.png` | 10 | Luca Marini | Italy | Honda HRC Castrol |
-| `diogo_moreira.png` | 11 | Diogo Moreira | Brazil | Pro Honda LCR |
-| `maverick_vinales.png` | 12 | Maverick Viñales | Spain | Red Bull KTM Tech3 |
-| `fabio_quartararo.png` | 20 | Fabio Quartararo | France | Monster Energy Yamaha MotoGP |
-| `franco_morbidelli.png` | 21 | Franco Morbidelli | Italy | Pertamina Enduro VR46 Racing Team |
-| `enea_bastianini.png` | 23 | Enea Bastianini | Italy | Red Bull KTM Tech3 |
-| `raul_fernandez.png` | 25 | Raúl Fernández | Spain | SuperFile Trackhouse MotoGP Team |
-| `brad_binder.png` | 33 | Brad Binder | South Africa | Red Bull KTM Factory Racing |
-| `joan_mir.png` | 36 | Joan Mir | Spain | Honda HRC Castrol |
-| `pedro_acosta.png` | 37 | Pedro Acosta | Spain | Red Bull KTM Factory Racing |
-| `alex_rins.png` | 42 | Álex Rins | Spain | Monster Energy Yamaha MotoGP |
-| `jack_miller.png` | 43 | Jack Miller | Australia | Prima Pramac Yamaha MotoGP |
-| `fabio_di_giannantonio.png` | 49 | Fabio Di Giannantonio | Italy | Pertamina Enduro VR46 Racing Team |
-| `fermin_aldeguer.png` | 54 | Fermín Aldeguer | Spain | BK8 Gresini Racing MotoGP |
-| `francesco_bagnaia.png` | 63 | Francesco Bagnaia | Italy | Ducati Lenovo Team |
-| `marco_bezzecchi.png` | 72 | Marco Bezzecchi | Italy | Aprilia Racing |
-| `alex_marquez.png` | 73 | Álex Márquez | Spain | BK8 Gresini Racing MotoGP |
-| `ai_ogura.png` | 79 | Ai Ogura | Japan | SuperFile Trackhouse MotoGP Team |
-| `jorge_martin.png` | 89 | Jorge Martín | Spain | Aprilia Racing |
-| `marc_marquez.png` | 93 | Marc Márquez | Spain | Ducati Lenovo Team |
+| `johann_zarco` | 5 | Johann Zarco | France | CASTROL Honda LCR |
+| `toprak_razgatlioglu` | 7 | Toprak Razgatlıoğlu | Türkiye | Prima Pramac Yamaha MotoGP |
+| `luca_marini` | 10 | Luca Marini | Italy | Honda HRC Castrol |
+| `diogo_moreira` | 11 | Diogo Moreira | Brazil | Pro Honda LCR |
+| `maverick_vinales` | 12 | Maverick Viñales | Spain | Red Bull KTM Tech3 |
+| `fabio_quartararo` | 20 | Fabio Quartararo | France | Monster Energy Yamaha MotoGP |
+| `franco_morbidelli` | 21 | Franco Morbidelli | Italy | Pertamina Enduro VR46 Racing Team |
+| `enea_bastianini` | 23 | Enea Bastianini | Italy | Red Bull KTM Tech3 |
+| `raul_fernandez` | 25 | Raúl Fernández | Spain | SuperFile Trackhouse MotoGP Team |
+| `brad_binder` | 33 | Brad Binder | South Africa | Red Bull KTM Factory Racing |
+| `joan_mir` | 36 | Joan Mir | Spain | Honda HRC Castrol |
+| `pedro_acosta` | 37 | Pedro Acosta | Spain | Red Bull KTM Factory Racing |
+| `alex_rins` | 42 | Álex Rins | Spain | Monster Energy Yamaha MotoGP |
+| `jack_miller` | 43 | Jack Miller | Australia | Prima Pramac Yamaha MotoGP |
+| `fabio_di_giannantonio` | 49 | Fabio Di Giannantonio | Italy | Pertamina Enduro VR46 Racing Team |
+| `fermin_aldeguer` | 54 | Fermín Aldeguer | Spain | BK8 Gresini Racing MotoGP |
+| `francesco_bagnaia` | 63 | Francesco Bagnaia | Italy | Ducati Lenovo Team |
+| `marco_bezzecchi` | 72 | Marco Bezzecchi | Italy | Aprilia Racing |
+| `alex_marquez` | 73 | Álex Márquez | Spain | BK8 Gresini Racing MotoGP |
+| `ai_ogura` | 79 | Ai Ogura | Japan | SuperFile Trackhouse MotoGP Team |
+| `jorge_martin` | 89 | Jorge Martín | Spain | Aprilia Racing |
+| `marc_marquez` | 93 | Marc Márquez | Spain | Ducati Lenovo Team |
