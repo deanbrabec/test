@@ -96,7 +96,14 @@ All 22 from the official MotoGP entry list, source photos from motogp.com.
 
 ## Team logos
 
-Same 36 × 25 pt tile as the riders, at @2x and @3x, on white. A logo is
+Twelve tiles for twelve entries in the rider list. Same 36 × 25 pt tile as the
+riders, at @2x and @3x, on white.
+
+LCR appears twice under different sponsor branding — `CASTROL Honda LCR` for
+Zarco and `Pro Honda LCR` for Moreira — so it gets two tiles. Every source
+graphic carries only the one LCR mark, so the two files are currently identical
+artwork under the two names; drop a distinct logo in for either and it will
+override. A logo is
 **fitted** inside the tile rather than cropped to fill it: scaled to sit within
 a safe area of 0.94 × 0.86 of the tile and centred, which is how the F1
 standings list lays its team logos out (its widest logo fills 0.97 of the
@@ -129,7 +136,8 @@ step because the badge itself is a coloured block.
 | `pertamina_enduro_vr46` | Pertamina Enduro VR46 Racing Team | 21, 49 |
 | `bk8_gresini_racing` | BK8 Gresini Racing MotoGP | 54, 73 |
 | `honda_hrc_castrol` | Honda HRC Castrol | 10, 36 |
-| `lcr_honda` | LCR Honda (Castrol / Pro) | 5, 11 |
+| `castrol_honda_lcr` | CASTROL Honda LCR | 5 |
+| `pro_honda_lcr` | Pro Honda LCR | 11 |
 | `trackhouse` | SuperFile Trackhouse MotoGP Team | 25, 79 |
 
 ### Source quality
@@ -139,7 +147,8 @@ not, and are visibly soft:
 
 | File | Source | @3x scale |
 |---|---|---|
-| `lcr_honda` | 2026 launch-dates graphic | 1.10× upscale |
+| `castrol_honda_lcr` | 2026 launch-dates graphic | 1.10× upscale |
+| `pro_honda_lcr` | 2026 launch-dates graphic | 1.10× upscale |
 | `trackhouse` | 2026 launch-dates graphic | 1.24× upscale |
 
 Both come from small tiles in the launch-dates graphic, which is the only
@@ -149,7 +158,7 @@ with no badge to crop and lettering that would vanish on a white tile. Aprilia
 was recovered from the 2025 launches graphic, where it is set in black on a
 light background, and needs no upscaling.
 
-`lcr_honda` and `trackhouse` also keep their launch-graphic backgrounds (silver
+The LCR tiles and `trackhouse` also keep their launch-graphic backgrounds (silver
 and blue), which are that graphic's styling rather than team colours. Press-kit
 files for those two would improve both problems at once:
 

@@ -92,7 +92,18 @@
       ]
     },
     {
-      "name": "LCR Honda",
+      "name": "CASTROL Honda LCR",
+      "source": "launch2026",
+      "box": [
+        96,
+        382,
+        188,
+        430
+      ],
+      "key": false
+    },
+    {
+      "name": "Pro Honda LCR",
       "source": "launch2026",
       "box": [
         96,
