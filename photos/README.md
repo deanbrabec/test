@@ -8,6 +8,7 @@ Assets for the app's driver/rider pickers (e.g. the H2H **Select driver** list).
 photos/
   motogp/
     drivers/      # MotoGP rider thumbnails
+    teams/        # MotoGP team logos
 ```
 
 Formula 1 lives alongside this once its assets land (`photos/f1/drivers/`).
@@ -91,3 +92,53 @@ All 22 from the official MotoGP entry list, source photos from motogp.com.
 | `ai_ogura` | 79 | Ai Ogura | Japan | SuperFile Trackhouse MotoGP Team |
 | `jorge_martin` | 89 | Jorge Martín | Spain | Aprilia Racing |
 | `marc_marquez` | 93 | Marc Márquez | Spain | Ducati Lenovo Team |
+
+
+## Team logos
+
+Same 36 × 25 pt tile as the riders, at @2x and @3x, on white. A logo is
+**fitted** inside the tile rather than cropped to fill it: scaled to sit within
+a safe area of 0.94 × 0.86 of the tile and centred, which is how the F1
+standings list lays its team logos out (its widest logo fills 0.97 of the
+width, its tallest 0.86 of the height).
+
+```bash
+python3 tools/prepare_logos.py --manifest tools/team_logos.json \
+    --source <team-presentations-graphic> -o photos/motogp/teams
+```
+
+Sources are cropped out of the official 2026 team-presentations graphic;
+`tools/team_logos.json` holds one crop box per badge. Badges that are rounded
+or slanted keep some of the graphic's panel gradient inside their bounding box,
+so each corner is flood-filled to white — but only when that corner matches the
+panel colour just outside the badge, otherwise a badge with a pale block in its
+own corner (Gresini's title bar) would be eaten too.
+
+| File (`@2x` / `@3x`) | Team | Riders |
+|---|---|---|
+| `ducati_lenovo` | Ducati Lenovo Team | 63, 93 |
+| `aprilia_racing` | Aprilia Racing | 72, 89 |
+| `red_bull_ktm_factory_racing` | Red Bull KTM Factory Racing | 33, 37 |
+| `red_bull_ktm_tech3` | Red Bull KTM Tech3 | 12, 23 |
+| `monster_energy_yamaha` | Monster Energy Yamaha MotoGP | 20, 42 |
+| `prima_pramac_yamaha` | Prima Pramac Yamaha MotoGP | 7, 43 |
+| `pertamina_enduro_vr46` | Pertamina Enduro VR46 Racing Team | 21, 49 |
+| `bk8_gresini_racing` | BK8 Gresini Racing MotoGP | 54, 73 |
+| `honda_hrc_castrol` | Honda HRC Castrol | 10, 36 |
+| `lcr_honda` | LCR Honda (Castrol / Pro) | 5, 11 |
+| `trackhouse` | SuperFile Trackhouse MotoGP Team | 25, 79 |
+
+### Missing: Aprilia, LCR and Trackhouse
+
+Eight of the eleven are present. The other three are not in this folder yet
+because the presentation graphic does not contain a usable logo for them: where
+the other teams have a self-contained badge, these three are set as bare
+wordmarks in **white ink** over a photographed bike fairing. There is no badge
+to crop, the white lettering would disappear against a white tile, and the
+gradient behind it is the graphic's own artwork rather than any team colour.
+They need proper logo files (a press-kit PNG/SVG on a light background), which
+drop straight in:
+
+```bash
+python3 tools/prepare_logos.py aprilia.png --name "Aprilia Racing"
+```

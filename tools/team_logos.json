@@ -1,0 +1,77 @@
+{
+  "_comment": "Crop boxes into the official 2026 MotoGP team-presentations graphic, as [left, top, right, bottom]. Boxes are snapped to each badge's edges; the panel gradient left in the corners of rounded or slanted badges is keyed out to white by prepare_logos.py.",
+  "logos": [
+    {
+      "name": "Prima Pramac Yamaha",
+      "box": [
+        382,
+        472,
+        515,
+        610
+      ]
+    },
+    {
+      "name": "Pertamina Enduro VR46",
+      "box": [
+        345,
+        700,
+        566,
+        796
+      ]
+    },
+    {
+      "name": "Red Bull KTM Factory Racing",
+      "box": [
+        905,
+        676,
+        1019,
+        821
+      ]
+    },
+    {
+      "name": "Red Bull KTM Tech3",
+      "box": [
+        1026,
+        676,
+        1135,
+        821
+      ]
+    },
+    {
+      "name": "BK8 Gresini Racing",
+      "box": [
+        950,
+        892,
+        1102,
+        1018
+      ]
+    },
+    {
+      "name": "Ducati Lenovo",
+      "box": [
+        354,
+        1101,
+        558,
+        1223
+      ]
+    },
+    {
+      "name": "Monster Energy Yamaha",
+      "box": [
+        386,
+        1296,
+        516,
+        1440
+      ]
+    },
+    {
+      "name": "Honda HRC Castrol",
+      "box": [
+        932,
+        1307,
+        1116,
+        1428
+      ]
+    }
+  ]
+}
