@@ -5,9 +5,10 @@ Output: 72x50 px PNG (36x25 pt @2x), named name_surname.png.
 
 The crop reproduces the framing used by the existing F1 "Select driver" list:
 the head sits centred in a wide white box, top of the head ~6% down from the
-top edge, chin at ~40%, shoulders running off the bottom edge. Source photos
-are expected to be studio shots on a white backdrop, which lets the crop box
-extend past the image edge and be padded with white rather than clamped.
+top edge, chin at ~40%, shoulders running off the bottom edge. Sources may be
+either transparent cut-outs (the official MotoGP press shots) or studio photos
+on a white backdrop; both are flattened onto white, which lets the crop box
+extend past the image edge and be padded seamlessly rather than clamped.
 
 Usage:
     python3 tools/prepare_photos.py <image>... -o photos/motogp/drivers
@@ -24,7 +25,7 @@ import numpy as np
 from PIL import Image
 
 # Framing constants, measured off the F1 reference screenshot.
-HEAD_TOP = 0.02   # top of head, as a fraction of output height
+HEAD_TOP = 0.03   # top of head, as a fraction of output height
 CHIN = 0.68       # chin, as a fraction of output height
 WHITE_CUTOFF = 235  # below this on any channel counts as subject, not backdrop
 
@@ -36,7 +37,25 @@ def slugify(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
 
 
-def find_head(rgb: np.ndarray):
+def load(path) -> tuple:
+    """Return (RGB-on-white array, subject mask).
+
+    Transparent cut-outs carry an exact silhouette in the alpha channel; for
+    opaque sources fall back to "anything darker than the backdrop".
+    """
+    img = Image.open(path)
+    if img.mode in ("RGBA", "LA") or "transparency" in img.info:
+        img = img.convert("RGBA")
+        alpha = np.array(img)[..., 3]
+        if (alpha < 128).any():
+            flat = Image.alpha_composite(
+                Image.new("RGBA", img.size, (255, 255, 255, 255)), img)
+            return np.array(flat.convert("RGB")), alpha > 128
+    rgb = np.array(img.convert("RGB"))
+    return rgb, rgb.min(axis=2) < WHITE_CUTOFF
+
+
+def find_head(rgb: np.ndarray, subject: np.ndarray):
     """Return (head_top_y, chin_y, face_centre_x) in source pixels."""
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
     cascade = cv2.CascadeClassifier(
@@ -51,15 +70,14 @@ def find_head(rgb: np.ndarray):
 
     # Top of the head (hair or cap) from the subject silhouette, limited to a
     # column around the face so a raised elbow or shoulder can't win.
-    subject = rgb.min(axis=2) < WHITE_CUTOFF
     lo, hi = int(max(0, cx - fw * 0.7)), int(min(rgb.shape[1], cx + fw * 0.7))
     rows = np.where(subject[:, lo:hi].any(axis=1))[0]
     head_top = float(rows.min()) if len(rows) else float(fy)
     return head_top, float(chin), float(cx)
 
 
-def thumbnail(rgb: np.ndarray, width: int, height: int) -> Image.Image:
-    head_top, chin, cx = find_head(rgb)
+def thumbnail(rgb: np.ndarray, subject: np.ndarray, width: int, height: int) -> Image.Image:
+    head_top, chin, cx = find_head(rgb, subject)
 
     crop_h = (chin - head_top) / (CHIN - HEAD_TOP)
     crop_w = crop_h * width / height
@@ -95,9 +113,9 @@ def main(argv=None) -> int:
             print(f"skip: {src}", file=sys.stderr)
             failed += 1
             continue
-        rgb = np.array(Image.open(src).convert("RGB"))
+        rgb, subject = load(src)
         try:
-            out = thumbnail(rgb, args.width, args.height)
+            out = thumbnail(rgb, subject, args.width, args.height)
         except ValueError as exc:
             print(f"skip {src}: {exc}", file=sys.stderr)
             failed += 1
