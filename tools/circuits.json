@@ -1,0 +1,203 @@
+{
+  "_comment": "Cell boxes into the 2026 MotoGP calendar poster, [left,top,right,bottom]. Each box holds one circuit outline, excluding its name/date label.",
+  "circuits": [
+    {
+      "name": "Thailand",
+      "box": [
+        55,
+        125,
+        205,
+        222
+      ]
+    },
+    {
+      "name": "Brazil",
+      "box": [
+        220,
+        125,
+        370,
+        222
+      ]
+    },
+    {
+      "name": "United States",
+      "box": [
+        385,
+        125,
+        535,
+        222
+      ]
+    },
+    {
+      "name": "Qatar",
+      "box": [
+        550,
+        125,
+        705,
+        222
+      ]
+    },
+    {
+      "name": "Spain",
+      "box": [
+        55,
+        268,
+        205,
+        368
+      ]
+    },
+    {
+      "name": "France",
+      "box": [
+        220,
+        268,
+        370,
+        368
+      ]
+    },
+    {
+      "name": "Catalunya",
+      "box": [
+        385,
+        268,
+        535,
+        368
+      ]
+    },
+    {
+      "name": "Italy",
+      "box": [
+        550,
+        268,
+        705,
+        368
+      ]
+    },
+    {
+      "name": "Hungary",
+      "box": [
+        55,
+        413,
+        205,
+        512
+      ]
+    },
+    {
+      "name": "Czech Republic",
+      "box": [
+        220,
+        413,
+        370,
+        512
+      ]
+    },
+    {
+      "name": "Netherlands",
+      "box": [
+        385,
+        413,
+        535,
+        512
+      ]
+    },
+    {
+      "name": "Germany",
+      "box": [
+        550,
+        413,
+        705,
+        512
+      ]
+    },
+    {
+      "name": "Great Britain",
+      "box": [
+        55,
+        558,
+        205,
+        655
+      ]
+    },
+    {
+      "name": "Aragon",
+      "box": [
+        220,
+        558,
+        370,
+        655
+      ]
+    },
+    {
+      "name": "San Marino",
+      "box": [
+        385,
+        558,
+        535,
+        655
+      ]
+    },
+    {
+      "name": "Austria",
+      "box": [
+        550,
+        558,
+        705,
+        655
+      ]
+    },
+    {
+      "name": "Japan",
+      "box": [
+        55,
+        700,
+        205,
+        800
+      ]
+    },
+    {
+      "name": "Indonesia",
+      "box": [
+        220,
+        700,
+        370,
+        800
+      ]
+    },
+    {
+      "name": "Australia",
+      "box": [
+        385,
+        700,
+        535,
+        800
+      ]
+    },
+    {
+      "name": "Malaysia",
+      "box": [
+        550,
+        700,
+        705,
+        800
+      ]
+    },
+    {
+      "name": "Portugal",
+      "box": [
+        55,
+        848,
+        205,
+        945
+      ]
+    },
+    {
+      "name": "Valencia",
+      "box": [
+        220,
+        848,
+        370,
+        945
+      ]
+    }
+  ]
+}
