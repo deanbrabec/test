@@ -60,12 +60,32 @@ Five frames, matching the FormuLap set:
 | # | Screen | Carries |
 |---|---|---|
 | 1 | Races | the calendar and circuit maps |
-| 2 | Drivers | rider list and photos |
+| 2 | Riders | rider list and photos |
 | 3 | Teams | team standings and logos |
 | 4 | News | news feed |
 | 5 | H2H | head-to-head comparison |
 
 Frame 1 does most of the work — it is what shows in search results.
+
+### The FormuLap frame, as observed
+
+Each frame is one composition on a 1320 × 2868 canvas:
+
+| Element | Treatment |
+|---|---|
+| Canvas | near-black, sampled ≈ `#0E0F12` |
+| Headline | white, heavy **italic uppercase**, centred, in the top eighth |
+| Device | iPhone mockup with a **red** frame rather than the usual silver or black — this is what makes the set recognisable |
+| Screen | the real app UI, dark theme, status bar reading 9:41 |
+| Highlight | a rounded **red pill** floating over one row and breaking past the phone's left edge, pulling the eye to a single fact |
+| Variant | the Drivers frame swaps the red pill for a dark card holding two rows |
+
+Accent red sampled from the pills ≈ `#AE2318`, but that is measured off a
+screenshot of the store page, so it has been through a scrim and JPEG. The
+exact brand red should come from the design file rather than from this.
+
+FormuLap runs seven frames (Races, Chat, Drivers, Teams, News, Polls, H2H).
+MotoLap takes the five above.
 
 ## Naming constraint
 
