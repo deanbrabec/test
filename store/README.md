@@ -57,6 +57,17 @@ captures exist — see the warning in `UPLOAD.md` before uploading them.
 
 Both stores: JPEG or 24-bit PNG, **no alpha channel**.
 
+### File size
+
+Google Play documents 8 MB per screenshot. **Apple's own specification page
+states no file-size limit at all**, and the third-party guides disagree with
+each other — 8, 10 and 30 MB are all in circulation. `check_assets.py`
+therefore holds both stores to the smallest published figure rather than
+trusting the generous ones.
+
+The largest file in the repo is 789 KB, about a tenth of that cap, so there is
+no reason to compress: PNG stays lossless and the text stays crisp.
+
 From March 31 2026 Google Play renders icons with a 30% corner radius
 automatically — the source icon should be a full square with no baked-in
 rounding.

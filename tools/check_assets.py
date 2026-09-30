@@ -21,7 +21,12 @@ SLOTS = {
     "screenshots/play":        (None,         "play"),
     "screenshots/play-tablet": (None,         "play"),
 }
-PLAY_MIN, PLAY_MAX, PLAY_RATIO, PLAY_BYTES = 320, 3840, 2.0, 8 * 1024 * 1024
+PLAY_MIN, PLAY_MAX, PLAY_RATIO = 320, 3840, 2.0
+# Play documents 8MB per screenshot. Apple's own specification page states no
+# file-size limit at all, and third-party guides disagree with each other
+# (8, 10 and 30MB are all in circulation), so hold both stores to the smallest
+# published figure rather than trusting the generous ones.
+MAX_BYTES = 8 * 1024 * 1024
 
 
 def check(root: Path) -> list:
@@ -40,23 +45,26 @@ def check(root: Path) -> list:
                 problems.append(f"{f}: mode {im.mode} — both stores reject alpha")
             if exact and im.size != exact:
                 problems.append(f"{f}: {w}x{h}, slot needs {exact[0]}x{exact[1]}")
+            if f.stat().st_size > MAX_BYTES:
+                problems.append(f"{f}: {f.stat().st_size//1024}KB over the 8MB cap")
             if store == "play":
                 if min(w, h) < PLAY_MIN or max(w, h) > PLAY_MAX:
                     problems.append(f"{f}: {w}x{h} outside Play's {PLAY_MIN}–{PLAY_MAX}px")
                 if max(w, h) / min(w, h) > PLAY_RATIO:
                     problems.append(f"{f}: {max(w,h)/min(w,h):.2f}:1 — Play caps at 2:1")
-                if f.stat().st_size > PLAY_BYTES:
-                    problems.append(f"{f}: {f.stat().st_size//1024}KB over Play's 8MB")
         ratio = max(max(s) / min(s) for s in sizes)
         locales = {p.parent.name for p in files}
+        biggest = max(f.stat().st_size for f in files)
         print(f"{slot:26s} {len(files):4d} files  {len(locales):2d} locales  "
-              f"{sizes}  {ratio:.2f}:1  {modes}")
+              f"{sizes}  {ratio:.2f}:1  {modes}  max {biggest//1024}KB "
+              f"({100*biggest/MAX_BYTES:.0f}% of cap)")
 
     fg = root / "feature_graphic.png"
     if fg.is_file():
         im = Image.open(fg)
         ok = im.size == (1024, 500) and im.mode == "RGB"
-        print(f"{'feature_graphic.png':26s}    1 file            {im.size}  {im.mode}")
+        print(f"{'feature_graphic.png':26s}    1 file            {im.size}  {im.mode}  "
+              f"max {fg.stat().st_size//1024}KB")
         if not ok:
             problems.append(f"{fg}: must be exactly 1024x500 RGB")
     else:

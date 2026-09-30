@@ -129,6 +129,19 @@ These have to be filled in from the console, there is nothing here to paste:
 - Support URL and privacy policy URL
 - The app icon — 1024 × 1024 for Apple, 512 × 512 for Play
 
+## Before you upload
+
+```bash
+python3 tools/check_assets.py
+```
+
+It validates every asset against what the consoles enforce at upload time:
+exact sizes for the Apple slots, no alpha anywhere, Play's 320–3840 px bounds
+and 2:1 ratio cap, and an 8 MB per-file limit. That last figure is Play's
+documented one — Apple publishes no limit and third-party guides quote 8, 10
+and 30 MB, so the check uses the smallest. Everything here sits around 10% of
+it.
+
 ## Changing anything
 
 The screenshots and the paste sheets are generated, so edit the source and
