@@ -102,7 +102,12 @@ MotoLap is an unofficial app and is not associated in any way with Dorna Sports,
 
 ## Screenshots
 
-`store/screenshots/en-US/` — 0 frames, 1320 × 2868, upload in order:
+`store/screenshots/en-US/` — 5 frames, 1320 × 2868, upload in order:
 
+1. `01_races.png`
+2. `02_riders.png`
+3. `03_teams.png`
+4. `04_news.png`
+5. `05_h2h.png`
 
 The same files serve Google Play, which accepts this size.
