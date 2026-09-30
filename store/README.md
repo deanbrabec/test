@@ -167,9 +167,6 @@ lettering. If FormuLap uses something else, swap the file in `store/fonts/`.
 
 ## Still needed
 
-- [ ] **A Teams capture** — the fifth frame. The four others are built; Teams
-      is the only screen not supplied, and the Home capture that came with them
-      is 1320 × 1477 rather than the full 1320 × 2868, so it cannot stand in.
 - [ ] The list of languages to localise into
 - [ ] Final app name
 - [ ] Category, age rating, support URL, privacy policy URL
