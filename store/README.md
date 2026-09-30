@@ -44,8 +44,13 @@ already combined when indexing), comma-separated with no spaces.
 smaller is auto-scaled from it. 6.5" (1284 × 2778) is only needed if 6.9" is
 absent. iPad 13" (2064 × 2752) is required only if the app ships for iPad.
 
-**Google Play** is flexible: any side ≥ 320 px, no side > 3840 px, ratio within
-2:1. The 1320 × 2868 iPhone frames can be reused directly.
+**Google Play** takes any side ≥ 320 px and no side > 3840 px, but caps the
+ratio at **2:1** — and the App Store's 6.9" frame is 2.17:1, so the iPhone
+files cannot be reused. The Play set is the same composition on a 1320 × 2620
+canvas (1.98:1), built with `--size`.
+
+**iPad is mandatory if the app runs on iPad**: 2064 × 2752, or 2048 × 2732.
+Building it needs iPad captures — see `UPLOAD.md`.
 
 Both stores: JPEG or 24-bit PNG, **no alpha channel**.
 

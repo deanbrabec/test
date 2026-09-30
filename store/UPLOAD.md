@@ -9,7 +9,8 @@ work through and which file goes in which field.
 store/
   listing/paste/<locale>.md    ← work from these; every field ready to copy
   listing/<locale>.json        source of truth behind the paste sheets
-  screenshots/<locale>/        5 frames, 1320 × 2868
+  screenshots/appstore/<locale>/   5 frames, 1320 × 2868
+  screenshots/play/<locale>/       5 frames, 1320 × 2620
   feature_graphic.png          1024 × 500, Google Play only
 ```
 
@@ -32,11 +33,26 @@ Per locale, under **App Store → [version] → [language]**:
 | Promotional Text | **Promotional Text** |
 | Description | **Description** |
 | Keywords | **Keywords** |
-| App Previews and Screenshots → iPhone 6.9" | the 5 files, in order |
+| App Previews and Screenshots → iPhone 6.9" | `screenshots/appstore/<locale>/`, 5 files in order |
 
-**Only upload the 6.9" size.** Apple scales every smaller iPhone from it, so
-6.5", 6.3" and the rest need nothing. Add the iPad sizes only if the app ships
-for iPad.
+**Only upload the 6.9" iPhone size.** Apple scales every smaller iPhone from
+it, so 6.5", 6.3" and the rest need nothing.
+
+### iPad is mandatory if the app runs on iPad
+
+Apple's wording is *"Required if app runs on iPad."* If MotoLap ships for iPad
+— FormuLap does, its store page lists "iPhone, iPad" — then the 13" size is
+compulsory and the version cannot be submitted without it:
+
+**2064 × 2752** portrait (2048 × 2732 is also accepted). Apple scales the
+smaller iPad sizes from it.
+
+**This set is not in the repo**, because building it needs iPad captures of
+the app. If the app has a native iPad layout, those frames have to show it;
+screenshots of a phone layout would not represent what an iPad user gets. If
+the app is iPhone-only and merely runs on iPad in compatibility mode, the phone
+composition is representative and can be re-rendered at the iPad canvas with
+`--size 2064x2752`.
 
 Locale codes in App Store Connect are `cs`, `de-DE`, `en-US`, `es-ES`, `fr-FR`,
 `hu`, `it`, `nl-NL`, `pl`, `pt-BR`, `tr` — Apple drops the region on some of
@@ -58,13 +74,25 @@ Per locale, under **Grow → Store presence → Main store listing**:
 | App name | **App name** |
 | Short description | **Short description** |
 | Full description | **Full description** |
-| Phone screenshots | the same 5 files |
+| Phone screenshots | `screenshots/play/<locale>/`, 5 files in order |
 | Feature graphic | `store/feature_graphic.png` |
 
-The 1320 × 2868 frames are within what Play accepts, so the same files serve
-both stores. Play has no keywords field — the full description is what it
-indexes, which is why the Play and App Store descriptions here are written
-differently rather than being the same text twice.
+**Use the `play/` set, not the `appstore/` one.** Play refuses any image whose
+long side is more than twice its short side, and the App Store 6.9" frame is
+2.17:1 — it would be rejected. The `play/` frames are the same composition on a
+1320 × 2620 canvas, which is 1.98:1.
+
+Play has no keywords field — the full description is what it indexes, which is
+why the Play and App Store descriptions here are written differently rather
+than being the same text twice.
+
+### Tablet screenshots on Play
+
+Not compulsory, but consequential: without them an app can be filtered out of
+the large-screen experience, and large-screen quality feeds ranking and
+featuring for tablet and Chromebook users. Play asks for at least four, at
+1200 × 1920 (7") or 1600 × 2560 (10"). Same dependency as iPad — it needs
+tablet captures of the app.
 
 Locale codes are `cs-CZ`, `de-DE`, `en-US`, `es-ES`, `fr-FR`, `hu-HU`, `it-IT`,
 `nl-NL`, `pl-PL`, `pt-BR`, `tr-TR`.

@@ -102,7 +102,9 @@ MotoLap est une application non officielle et n'est en aucune façon associée �
 
 ## Screenshots
 
-`store/screenshots/fr/` — 5 frames, 1320 × 2868, upload in order:
+### App Store — iPhone 6.9"
+
+`store/screenshots/appstore/fr/` — 5 frames, 1320 × 2868, upload in order:
 
 1. `01_courses.png`
 2. `02_pilotes.png`
@@ -110,4 +112,14 @@ MotoLap est une application non officielle et n'est en aucune façon associée �
 4. `04_actus.png`
 5. `05_h2h.png`
 
-The same files serve Google Play, which accepts this size.
+### Google Play — phone
+
+`store/screenshots/play/fr/` — 5 frames, 1320 × 2620, upload in order:
+
+1. `01_courses.png`
+2. `02_pilotes.png`
+3. `03_équipes.png`
+4. `04_actus.png`
+5. `05_h2h.png`
+
+The two sets are the same composition on different canvases: Google Play refuses any image whose long side is more than twice its short side, and the App Store 6.9" frame is 2.17:1.
