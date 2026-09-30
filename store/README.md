@@ -144,9 +144,32 @@ the ownership change, to trade as **MotoGP Sports Entertainment Group**. The
 registrations still name Dorna Sports, S.L., so that is the entity to attribute
 to — but this is worth a lawyer's eye before it ships, not mine.
 
+## Building the screenshots
+
+```bash
+python3 tools/build_screenshots.py --manifest store/frames.json \
+    --shots store/raw -o store/screenshots --lang en
+```
+
+`store/raw/` holds the untouched app captures, `store/frames.json` says which
+screen each frame uses, its headline and its pill copy. Output is
+`store/screenshots/<lang>/`.
+
+The builder repaints the status bar on every frame. The raw captures were taken
+on a real phone, so one carried a music player expanded in the Dynamic Island
+reading "SHE DOESN'T MIND", the H2H one was on wifi with a different island
+shape, and the signal and battery glyphs are near-black against the dark UI, so
+they read as smudges. Each frame gets a clean 9:41, a centred island, full
+signal and a full battery instead.
+
+Headline font is Poppins ExtraBold Italic, chosen to match the FormuLap
+lettering. If FormuLap uses something else, swap the file in `store/fonts/`.
+
 ## Still needed
 
-- [ ] FormuLap screenshots as the reference, and the MotoLap equivalents
+- [ ] **A Teams capture** — the fifth frame. The four others are built; Teams
+      is the only screen not supplied, and the Home capture that came with them
+      is 1320 × 1477 rather than the full 1320 × 2868, so it cannot stand in.
 - [ ] The list of languages to localise into
 - [ ] Final app name
 - [ ] Category, age rating, support URL, privacy policy URL
