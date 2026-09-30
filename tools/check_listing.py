@@ -36,6 +36,19 @@ def check(path: Path) -> list:
             problems += [f"{path.name}: {store}.{field} is {n}, limit {limit}"] * bad
             print(f"  {store+'.'+field:32s} {n:5d} / {limit:<5d} {'OVER' if bad else ''}")
 
+    # The unofficial-app disclaimer has to survive every edit: it is what makes
+    # a descriptive use of the trademark defensible rather than a claim of
+    # affiliation, and reviewers look for it. The wording is localised, so
+    # check for the two things that cannot be translated away.
+    for store, field in (("app_store", "description"),
+                         ("google_play", "full_description")):
+        body = doc.get(store, {}).get(field, "")
+        for marker in ("Dorna Sports", "MOTOGP"):
+            if marker not in body:
+                problems.append(f"{path.name}: {store}.{field} has no "
+                                f"{marker!r} — disclaimer missing")
+                print(f"  {store+'.'+field}: disclaimer missing ({marker})")
+
     kw = doc.get("app_store", {}).get("keywords", "")
     if kw:
         terms = [t.strip() for t in kw.split(",")]

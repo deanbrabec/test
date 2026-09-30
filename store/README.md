@@ -269,10 +269,11 @@ python3 tools/export_listing.py store/listing/*.json \
 a fenced block with its length against the limit, followed by the screenshot
 filenames in upload order. Nothing needs unescaping from JSON.
 
-The checker enforces each field's hard limit and two App Store keyword rules
-that are easy to break by accident: no space after the commas, and no term
-repeated from the name or subtitle. It compares whole tokens rather than
-substrings, so `gp` is not treated as a repeat of `MotoGP`.
+The checker enforces each field's hard limit, the presence of the disclaimer in
+both descriptions, and two App Store keyword rules that are easy to break by
+accident: no space after the commas, and no term repeated from the name or
+subtitle. It compares whole tokens rather than substrings, so `gp` is not
+treated as a repeat of `MotoGP`.
 
 ### Keywords are localised, not translated
 
@@ -305,7 +306,10 @@ than a list, because Google indexes that field and Apple does not.
 
 ### Disclaimer
 
-Both descriptions end with it, and the app carries the same line in Settings:
+Both descriptions in all eleven locales end with it, and the app carries the
+same line in Settings. `check_listing.py` fails if it goes missing: the wording
+is localised, so it looks for the two things that cannot be translated away —
+`Dorna Sports` and `MOTOGP`.
 
 > MotoLap is an unofficial app and is not associated in any way with Dorna
 > Sports, S.L. or the MotoGP group of companies. MOTOGP, MOTO2, MOTO3, GRAND
