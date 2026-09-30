@@ -7,33 +7,78 @@
   },
   "frames": [
     {
-      "headline": "Races", "screen": "races.png",
+      "headline": "Races",
+      "screen": "races.png",
       "pill": {
-        "type": "result", "at": 0.29,
-        "badge": "1.", "photo": "photos/motogp/drivers/pedro_acosta@3x.png",
-        "title": "P. Acosta", "subtitle": "Red Bull KTM", "value": "0:42:16.99"
+        "type": "result",
+        "at": 0.29,
+        "badge": "1.",
+        "photo": "photos/motogp/drivers/pedro_acosta@3x.png",
+        "title": "P. Acosta",
+        "subtitle": "Red Bull KTM",
+        "value": "0:42:16.99"
       }
     },
     {
-      "headline": "Riders", "screen": "riders.png",
+      "headline": "Riders",
+      "screen": "riders.png",
       "pill": {
-        "type": "standing", "at": 0.21,
-        "badge": "1.", "photo": "photos/motogp/drivers/jorge_martin@3x.png",
-        "title": "Jorge Martín", "subtitle": "Aprilia Racing · 306 pts",
-        "chips": ["2.", "5.", "5.", "2.", "5."]
+        "type": "standing",
+        "at": 0.21,
+        "badge": "1.",
+        "photo": "photos/motogp/drivers/jorge_martin@3x.png",
+        "title": "Jorge Martín",
+        "subtitle": "Aprilia Racing · 306 pts",
+        "chips": [
+          "2.",
+          "5.",
+          "5.",
+          "2.",
+          "5."
+        ]
       }
     },
     {
-      "headline": "News", "screen": "news.png",
+      "headline": "Teams",
+      "screen": "teams.png",
       "pill": {
-        "type": "news", "at": 0.43,
-        "thumb": "store/raw/news.png", "thumb_box": [112, 1725, 455, 1912],
-        "title": "Martín leads into Motegi", "subtitle": "Grande Prêmio"
+        "type": "standing",
+        "at": 0.21,
+        "badge": "1.",
+        "photo": "photos/motogp/teams/aprilia_racing@3x.png",
+        "title": "Aprilia Racing",
+        "subtitle": "Teams' championship leader",
+        "value": "176 pts"
       }
     },
     {
-      "headline": "H2H", "screen": "h2h.png",
-      "pill": { "type": "stat", "at": 0.39, "label": "Wins", "left": "1", "right": "5", "ratio": 0.17 }
+      "headline": "News",
+      "screen": "news.png",
+      "pill": {
+        "type": "news",
+        "at": 0.43,
+        "thumb": "store/raw/news.png",
+        "thumb_box": [
+          112,
+          1725,
+          455,
+          1912
+        ],
+        "title": "Martín leads into Motegi",
+        "subtitle": "Grande Prêmio"
+      }
+    },
+    {
+      "headline": "H2H",
+      "screen": "h2h.png",
+      "pill": {
+        "type": "stat",
+        "at": 0.39,
+        "label": "Wins",
+        "left": "1",
+        "right": "5",
+        "ratio": 0.17
+      }
     }
   ]
 }
