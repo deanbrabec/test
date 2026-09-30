@@ -180,6 +180,7 @@ not on the 22-rider entry list above. Same spec and same framing.
 |---|---|---|
 | `lorenzo_savadori` | Lorenzo Savadori | Aprilia Racing |
 | `pol_espargaro` | Pol Espargaró | Tech3 |
+| `jonas_folger` | Jonas Folger | Tech3 |
 | `cal_crutchlow` | Cal Crutchlow | Yamalube |
 | `takaaki_nakagami` | Takaaki Nakagami | LCR Honda Idm. |
 | `augusto_fernandez` | Augusto Fernández | ME Yamaha |
@@ -192,7 +193,13 @@ team the standings list them under — they ride for whoever they stand in for. 
 in a team polo rather than leathers, which is barely visible at tile size. Replace the source and re-run if that
 matters.
 
-Still missing, and needed for the standings to be complete: **Jonas Folger**.
+All eight substitute riders in the standings are now present.
+
+Both KTM riders wear factory Red Bull KTM kit with no number on it, so the two
+were briefly swapped: the shot now filed as `jonas_folger` was first shipped as
+`pol_espargaro`. If a source is ambiguous, check it against a photo you can
+name before committing — a wrong filename shows up in the app as the wrong face
+and is easy to miss.
 
 #### What the script needs from a source photo
 
