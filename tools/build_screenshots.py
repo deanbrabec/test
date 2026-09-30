@@ -13,6 +13,7 @@ import json
 import sys
 from pathlib import Path
 
+import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H = 1320, 2868
@@ -27,12 +28,43 @@ BEZEL = 9                      # red frame thickness
 RADIUS = 78
 
 
-def gradient() -> Image.Image:
-    g = Image.new("RGB", (1, H))
-    for y in range(H):
-        t = y / (H - 1)
-        g.putpixel((0, y), tuple(round(a + (b - a) * t) for a, b in zip(TOP, BOTTOM)))
-    return g.resize((W, H))
+BACKGROUNDS = ("flat", "glow", "rise", "sweep", "vignette")
+
+
+def background(kind: str) -> Image.Image:
+    """Canvas behind the phone. All start from the app's own near-black."""
+    y, x = np.mgrid[0:H, 0:W].astype(np.float32)
+    ny, nx = y / (H - 1), x / (W - 1)
+
+    base = np.zeros((H, W, 3), np.float32)
+    for c, (a, b) in enumerate(zip(TOP, BOTTOM)):
+        base[..., c] = a + (b - a) * ny
+
+    if kind == "flat":
+        out = base
+    elif kind == "glow":
+        # brand-coloured halo centred behind the phone
+        d = np.sqrt(((nx - 0.5) * 1.35) ** 2 + ((ny - 0.46) * 0.95) ** 2)
+        g = np.clip(1 - d / 0.62, 0, 1) ** 2.1
+        out = base + g[..., None] * np.array(RED, np.float32) * 0.46
+    elif kind == "rise":
+        # glow climbing from the bottom edge, so the phone sits in light
+        g = np.clip((ny - 0.42) / 0.58, 0, 1) ** 1.7
+        side = np.clip(1 - np.abs(nx - 0.5) * 1.5, 0, 1)
+        out = base + (g * side)[..., None] * np.array(RED, np.float32) * 0.55
+    elif kind == "sweep":
+        # diagonal band, echoing the livery stripes in the app icon
+        dgn = np.clip(1 - np.abs((nx * 0.75 + ny * 0.55) - 0.62) / 0.42, 0, 1) ** 1.6
+        out = base + dgn[..., None] * np.array(RED, np.float32) * 0.34
+    elif kind == "vignette":
+        d = np.sqrt(((nx - 0.5) * 1.1) ** 2 + ((ny - 0.44) * 0.8) ** 2)
+        lift = np.clip(1 - d / 0.78, 0, 1) ** 1.5
+        out = base * (0.58 + 0.75 * lift[..., None])
+        out += lift[..., None] * np.array(RED, np.float32) * 0.12
+    else:
+        raise ValueError(f"unknown background {kind!r}; pick from {BACKGROUNDS}")
+
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
 
 
 def rounded(size, radius, fill) -> Image.Image:
@@ -175,8 +207,8 @@ def render_pill(pill, fonts):
     return card
 
 
-def build(entry, fonts, shots_dir) -> Image.Image:
-    canvas = gradient().convert("RGBA")
+def build(entry, fonts, shots_dir, bg="flat") -> Image.Image:
+    canvas = background(bg).convert("RGBA")
     d = ImageDraw.Draw(canvas)
 
     # headline
@@ -220,6 +252,7 @@ def main(argv=None) -> int:
     p.add_argument("--shots", type=Path, default=Path("store/raw"))
     p.add_argument("-o", "--out-dir", type=Path, default=Path("store/screenshots"))
     p.add_argument("--lang", default="en")
+    p.add_argument("--bg", default="flat", choices=BACKGROUNDS)
     args = p.parse_args(argv)
 
     spec = json.loads(args.manifest.read_text())
@@ -228,7 +261,7 @@ def main(argv=None) -> int:
     out.mkdir(parents=True, exist_ok=True)
 
     for i, entry in enumerate(spec["frames"], 1):
-        img = build(entry, fonts, args.shots)
+        img = build(entry, fonts, args.shots, args.bg)
         dst = out / f"{i:02d}_{entry['headline'].lower()}.png"
         img.save(dst)
         print(f"{dst}  {img.width}x{img.height}")
