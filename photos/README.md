@@ -170,3 +170,35 @@ files for those two would improve both problems at once:
 ```bash
 python3 tools/prepare_logos.py trackhouse.png --name "Trackhouse"
 ```
+
+### Test and substitute riders
+
+Riders who appear in the standings on a wildcard or as a stand-in, so they are
+not on the 22-rider entry list above. Same spec and same framing.
+
+| File (`@2x` / `@3x`) | Rider | Team, as the standings label it |
+|---|---|---|
+| `lorenzo_savadori` | Lorenzo Savadori | Aprilia Racing |
+| `pol_espargaro` | Pol Espargaró | Tech3 |
+| `cal_crutchlow` | Cal Crutchlow | Yamalube |
+| `takaaki_nakagami` | Takaaki Nakagami | LCR Honda Idm. |
+
+`cal_crutchlow` is shot in Castrol LCR Honda leathers, which is not the team
+the standings list him under. Replace the source and re-run if that matters.
+
+Still missing, and needed for the standings to be complete: **Iker Lecuona**,
+**Augusto Fernández**, **Jonas Folger** and **Michele Pirro**. Pirro has a
+source but it is unusable — see below.
+
+#### What the script needs from a source photo
+
+A studio shot, head-and-shoulders or upper body, on a plain white or
+transparent background. The rider should fill a good part of the frame: the
+crop is driven by the head, so a full-body shot at small pixel size leaves far
+too little to work with.
+
+The Michele Pirro photo supplied is a 250 × 250 full-body cut-out in which the
+rider occupies 75 × 249 px. The face is too small for the detector to find at
+all, and even placed by hand the crop would be about 50 × 35 px, needing a 2.2×
+upscale at @3x. It would be visibly soft next to the other riders, so it is not
+included.
