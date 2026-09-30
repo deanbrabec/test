@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Yarışlar",
+    "riders": "Sürücüler",
+    "teams": "Takımlar",
+    "news": "Haberler",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 puan"
+    },
+    "teams": {
+      "subtitle": "Takımlar şampiyonası lideri"
+    },
+    "news": {
+      "title": "Martín Motegi'ye lider gidiyor"
+    },
+    "h2h": {
+      "label": "Galibiyet"
+    }
+  }
+}

@@ -253,9 +253,19 @@ def main(argv=None) -> int:
     p.add_argument("-o", "--out-dir", type=Path, default=Path("store/screenshots"))
     p.add_argument("--lang", default="en")
     p.add_argument("--bg", default="flat", choices=BACKGROUNDS)
+    p.add_argument("--strings", type=Path,
+                   help="locale overrides for headline and pill copy; "
+                        "the manifest itself carries the layout and the English text")
     args = p.parse_args(argv)
 
     spec = json.loads(args.manifest.read_text())
+    if args.strings:
+        over = json.loads(args.strings.read_text())
+        for frame in spec["frames"]:
+            key = frame["headline"].lower()
+            frame["headline"] = over.get("headlines", {}).get(key, frame["headline"])
+            for field, value in over.get("pills", {}).get(key, {}).items():
+                frame["pill"][field] = value
     fonts = {k: str(Path(v)) for k, v in spec["fonts"].items()}
     out = args.out_dir / args.lang
     out.mkdir(parents=True, exist_ok=True)

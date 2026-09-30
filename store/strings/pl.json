@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Wyścigi",
+    "riders": "Zawodnicy",
+    "teams": "Zespoły",
+    "news": "Wiadomości",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 pkt"
+    },
+    "teams": {
+      "subtitle": "Lider klasyfikacji zespołów"
+    },
+    "news": {
+      "title": "Martín prowadzi przed Motegi"
+    },
+    "h2h": {
+      "label": "Wygrane"
+    }
+  }
+}

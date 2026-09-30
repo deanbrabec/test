@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Rennen",
+    "riders": "Fahrer",
+    "teams": "Teams",
+    "news": "News",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 Pkt."
+    },
+    "teams": {
+      "subtitle": "Führend in der Teamwertung"
+    },
+    "news": {
+      "title": "Martín führt nach Motegi"
+    },
+    "h2h": {
+      "label": "Siege"
+    }
+  }
+}

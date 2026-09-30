@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Gare",
+    "riders": "Piloti",
+    "teams": "Team",
+    "news": "News",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 pti"
+    },
+    "teams": {
+      "subtitle": "Leader del mondiale team"
+    },
+    "news": {
+      "title": "Martín al comando a Motegi"
+    },
+    "h2h": {
+      "label": "Vittorie"
+    }
+  }
+}

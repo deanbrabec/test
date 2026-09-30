@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Futamok",
+    "riders": "Versenyzők",
+    "teams": "Csapatok",
+    "news": "Hírek",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 pont"
+    },
+    "teams": {
+      "subtitle": "Csapatbajnokság éllovasa"
+    },
+    "news": {
+      "title": "Martín vezet Motegi előtt"
+    },
+    "h2h": {
+      "label": "Győzelmek"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Courses",
+    "riders": "Pilotes",
+    "teams": "Équipes",
+    "news": "Actus",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 pts"
+    },
+    "teams": {
+      "subtitle": "Leader du championnat équipes"
+    },
+    "news": {
+      "title": "Martín en tête à Motegi"
+    },
+    "h2h": {
+      "label": "Victoires"
+    }
+  }
+}
