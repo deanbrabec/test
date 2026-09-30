@@ -23,6 +23,7 @@ TOP, BOTTOM = (18, 20, 27), (7, 8, 11)
 PHONE_W = 900                  # phone body width on the canvas
 PHONE_TOP = 640
 PILL_X, PILL_W, PILL_H = 46, 1228, 212
+BASELINE = 436          # headline baseline, shared by every frame
 GOLD = (198, 158, 42)
 BEZEL = 9                      # red frame thickness
 RADIUS = 78
@@ -207,16 +208,30 @@ def render_pill(pill, fonts):
     return card
 
 
-def build(entry, fonts, shots_dir, bg="flat") -> Image.Image:
+def build(entry, fonts, shots_dir, bg="flat", headline_font=None) -> Image.Image:
     canvas = background(bg).convert("RGBA")
     d = ImageDraw.Draw(canvas)
 
-    # headline
+    # Headline, sat on a shared baseline and centred on its ink.
+    #
+    # Anchoring the ink *top* instead pushes any headline carrying an accent
+    # down by the height of that accent — ZÁVODY and TÝMY landed 53px below
+    # JEZDCI. And centring on the advance width leaves italic text a few pixels
+    # off, because the lean puts ink outside the advance box.
     head = entry["headline"].upper()
-    f = fit_text(d, head, fonts["head"], W - 200, 190)
-    tw = d.textlength(head, font=f)
-    box = f.getbbox(head)
-    d.text(((W - tw) / 2, 300 - box[1]), head, font=f, fill=(255, 255, 255))
+    f = headline_font or fit_text(d, head, fonts["head"], W - 200, 190)
+
+    # Draw to a layer first and centre on the pixels that actually land.
+    # textbbox is a close estimate but still left Polish and Turkish 7px off,
+    # so measure the rendered ink instead of predicting it.
+    layer = Image.new("L", (W * 2, H), 0)
+    ImageDraw.Draw(layer).text((W, BASELINE), head, font=f, anchor="ls", fill=255)
+    ink = layer.getbbox()
+    centre = (ink[0] + ink[2]) / 2          # where the ink actually sits
+    left = round(centre - W / 2)            # crop so that centre lands on W/2
+    head_img = Image.new("RGBA", (W, H), (255, 255, 255, 0))
+    head_img.putalpha(layer.crop((left, 0, left + W, H)))
+    canvas.alpha_composite(head_img)
 
     # phone
     shot = Image.open(shots_dir / entry["screen"]).convert("RGB")
@@ -270,8 +285,16 @@ def main(argv=None) -> int:
     out = args.out_dir / args.lang
     out.mkdir(parents=True, exist_ok=True)
 
+    # One size for the whole set: the largest at which the longest headline
+    # still fits, so five frames read as a set rather than five sizes.
+    probe = ImageDraw.Draw(Image.new("RGB", (W, H)))
+    size = min(fit_text(probe, e["headline"].upper(), fonts["head"], W - 200, 190).size
+               for e in spec["frames"])
+    headline_font = ImageFont.truetype(fonts["head"], size)
+    print(f"headline size for this locale: {size}px")
+
     for i, entry in enumerate(spec["frames"], 1):
-        img = build(entry, fonts, args.shots, args.bg)
+        img = build(entry, fonts, args.shots, args.bg, headline_font)
         dst = out / f"{i:02d}_{entry['headline'].lower()}.png"
         img.save(dst)
         print(f"{dst}  {img.width}x{img.height}")

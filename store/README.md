@@ -180,6 +180,25 @@ signal and a full battery instead.
 Headline font is Poppins ExtraBold Italic, chosen to match the FormuLap
 lettering. If FormuLap uses something else, swap the file in `store/fonts/`.
 
+### Headline alignment
+
+Three things had to be right for the five frames to read as a set:
+
+- **One size per locale.** The size is the largest at which that locale's
+  *longest* headline still fits, applied to all five. Sizing each frame
+  independently gave five different sizes — Hungarian settles at 166px and
+  Polish at 158px, against 190px elsewhere.
+- **Shared baseline, not shared ink top.** Anchoring the top of the ink pushes
+  any headline carrying an accent down by the height of that accent: Czech
+  ZÁVODY and TÝMY sat 53px below JEZDCI before this.
+- **Centred on rendered ink, not on the advance width.** Italic type leans
+  outside its advance box, so measuring the advance left Polish and Turkish 7px
+  off centre. The headline is drawn to a layer, its real ink box measured, and
+  the layer composited so that box is centred.
+
+Worst centre offset across all 55 frames is now 1.5px, and baseline spread
+within a locale is zero.
+
 ## Feature graphic
 
 Google Play requires one and the App Store has no equivalent.
