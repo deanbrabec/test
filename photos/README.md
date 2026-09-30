@@ -183,13 +183,15 @@ not on the 22-rider entry list above. Same spec and same framing.
 | `cal_crutchlow` | Cal Crutchlow | Yamalube |
 | `takaaki_nakagami` | Takaaki Nakagami | LCR Honda Idm. |
 | `augusto_fernandez` | Augusto Fernández | ME Yamaha |
+| `michele_pirro` | Michele Pirro | Gresini |
 
-`cal_crutchlow` is shot in Castrol LCR Honda leathers, which is not the team
-the standings list him under. Replace the source and re-run if that matters.
+`cal_crutchlow` is shot in Castrol LCR Honda leathers and `michele_pirro` in
+Ducati Lenovo, neither of which is the team the standings list them under —
+both ride for whoever they stand in for. Replace the source and re-run if that
+matters.
 
-Still missing, and needed for the standings to be complete: **Iker Lecuona**,
-**Jonas Folger** and **Michele Pirro**. Pirro has a source but it is unusable —
-see below.
+Still missing, and needed for the standings to be complete: **Iker Lecuona**
+and **Jonas Folger**.
 
 #### What the script needs from a source photo
 
@@ -198,8 +200,9 @@ transparent background. The rider should fill a good part of the frame: the
 crop is driven by the head, so a full-body shot at small pixel size leaves far
 too little to work with.
 
-The Michele Pirro photo supplied is a 250 × 250 full-body cut-out in which the
-rider occupies 75 × 249 px. The face is too small for the detector to find at
-all, and even placed by hand the crop would be about 50 × 35 px, needing a 2.2×
-upscale at @3x. It would be visibly soft next to the other riders, so it is not
-included.
+Michele Pirro is the worked example. The first source supplied was a 250 × 250
+full-body cut-out in which the rider occupied 75 × 249 px: the face was too
+small for the detector to find at all, and a hand-placed crop would have been
+about 50 × 35 px, a 2.2× upscale at @3x. The replacement is a 447 × 447
+head-and-shoulders portrait on white — the head alone is 245 px, so it
+downscales 0.20× at @3x. Same rider, same spec, usable.
