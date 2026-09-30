@@ -87,10 +87,62 @@ exact brand red should come from the design file rather than from this.
 FormuLap runs seven frames (Races, Chat, Drivers, Teams, News, Polls, H2H).
 MotoLap takes the five above.
 
+## Languages
+
+Eleven, matching the in-app language list. Store locale codes differ between
+the two consoles:
+
+| Language | App Store | Google Play |
+|---|---|---|
+| Czech | `cs` | `cs-CZ` |
+| English | `en-US` | `en-US` |
+| Portuguese (Brazil) | `pt-BR` | `pt-BR` |
+| German | `de-DE` | `de-DE` |
+| Dutch | `nl-NL` | `nl-NL` |
+| French | `fr-FR` | `fr-FR` |
+| Italian | `it` | `it-IT` |
+| Spanish | `es-ES` | `es-ES` |
+| Polish | `pl` | `pl-PL` |
+| Hungarian | `hu` | `hu-HU` |
+| Turkish | `tr` | `tr-TR` |
+
+### What this costs, and what it buys
+
+**Cost:** screenshots carry a headline, so the set is localised too —
+5 frames × 11 languages = **55 exports** per store size.
+
+**Buys:** on the App Store every localisation has its own name, subtitle and
+keywords, so eleven locales is 11 × (30 + 30 + 100) characters of indexed
+metadata rather than one set.
+
+**Free extra:** App Store English variants (`en-GB`, `en-AU`, `en-CA`) are
+separate *metadata* localisations — adding them needs no app change and no new
+in-app translation, but gives a distinct keyword set in the UK, Australian and
+Canadian storefronts. The app stays English in all of them. Worth taking.
+
 ## Naming constraint
 
-The app name must not contain "MotoGP". See the trademark note below for what
-that means for the subtitle and description.
+The app name must not contain "MotoGP".
+
+### Disclaimer
+
+FormuLap carries an unofficial-app disclaimer in Settings, naming the marks and
+their owner. MotoLap needs the same, in-app and repeated at the foot of both
+store descriptions — reviewers look for it, and it is the thing that makes a
+descriptive use of the mark defensible rather than a claim of affiliation.
+
+FormuLap's wording, for reference:
+
+> This app is unofficial and is not associated in any way with the Formula One
+> group of companies. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD
+> CHAMPIONSHIP, GRAND PRIX, FORMULA ONE PADDOCK CLUB, PADDOCK CLUB and related
+> marks are trademarks of Formula One Licensing B.V.
+
+The MotoGP equivalent has a wrinkle: the marks (MOTOGP, MOTO2, MOTO3) are
+registered to **Dorna Sports, S.L.**, but Dorna rebranded during 2026, after
+the ownership change, to trade as **MotoGP Sports Entertainment Group**. The
+registrations still name Dorna Sports, S.L., so that is the entity to attribute
+to — but this is worth a lawyer's eye before it ships, not mine.
 
 ## Still needed
 
