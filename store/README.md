@@ -180,8 +180,33 @@ signal and a full battery instead.
 Headline font is Poppins ExtraBold Italic, chosen to match the FormuLap
 lettering. If FormuLap uses something else, swap the file in `store/fonts/`.
 
+## Feature graphic
+
+Google Play requires one and the App Store has no equivalent.
+
+```bash
+python3 tools/build_feature_graphic.py -o store/feature_graphic.png \
+    --map maps/motogp/circuits/italy.svg
+```
+
+1024 × 500, RGB, no transparency. It reuses the screenshots' `rise` background
+so the two read as one set, sets the wordmark in the same Poppins ExtraBold
+Italic as the screenshot headlines, and carries the red slash from the app's
+own "m" mark. The watermark behind it is a circuit outline taken straight from
+`maps/motogp/circuits/` — `--map` swaps it, Mugello reads cleanest because it
+does not crowd the wordmark.
+
+Play crops this asset at the edges on some surfaces, so nothing that has to be
+read sits in the outer 10%.
+
+The wordmark is typeset rather than taken from the app icon: the only copy of
+the logo available here is about 70 px tall inside a JPEG capture, which would
+have to be upscaled. Supplying the icon or logo as a file would let it be
+placed directly.
+
 ## Still needed
 
 - [ ] The list of languages to localise into
-- [ ] Final app name
+- [x] Final app name — **MotoLap**
 - [ ] Category, age rating, support URL, privacy policy URL
+- [ ] The app icon as a file, to replace the typeset wordmark if wanted
