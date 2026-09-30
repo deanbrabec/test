@@ -206,17 +206,35 @@ placed directly.
 
 ## Listing copy
 
-`store/listing/<locale>.json` holds every text field for both consoles.
-`en.json` is the master the other ten translate from.
+`store/listing/<locale>.json` holds every text field for both consoles, one
+file per locale, eleven in all.
 
 ```bash
-python3 tools/check_listing.py store/listing/*.json
+python3 tools/check_listing.py store/listing/*.json          # validate
+python3 tools/export_listing.py store/listing/*.json \
+    -o store/listing/paste                                   # paste sheets
 ```
+
+`store/listing/paste/<locale>.md` is the copy/paste form: every field alone in
+a fenced block with its length against the limit, followed by the screenshot
+filenames in upload order. Nothing needs unescaping from JSON.
 
 The checker enforces each field's hard limit and two App Store keyword rules
 that are easy to break by accident: no space after the commas, and no term
 repeated from the name or subtitle. It compares whole tokens rather than
 substrings, so `gp` is not treated as a repeat of `MotoGP`.
+
+### Keywords are localised, not translated
+
+Each locale's keywords come from its own pool of terms, because the words
+people search differ per market — German riders search *Motorrad* and
+*Straßenrennen*, Spanish ones *motociclismo*, Hungarian ones *gyorsasági*.
+Translating the English list would have produced terms nobody types.
+
+The pool is prioritised, and terms already covered by that locale's name or
+subtitle are dropped before the list is filled to 100 characters. That is a
+judgement about what each market searches, not measured data — if FormuLap has
+real search figures for any of these locales, they should override this.
 
 ### How the terms are spread
 

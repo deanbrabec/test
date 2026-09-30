@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Races",
+    "riders": "Rijders",
+    "teams": "Teams",
+    "news": "Nieuws",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 ptn"
+    },
+    "teams": {
+      "subtitle": "Koploper teamklassement"
+    },
+    "news": {
+      "title": "Martín leidt naar Motegi"
+    },
+    "h2h": {
+      "label": "Zeges"
+    }
+  }
+}

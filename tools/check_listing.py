@@ -46,10 +46,12 @@ def check(path: Path) -> list:
         # across them buys nothing and costs characters. Compare whole tokens,
         # not substrings: "gp" is not a repeat of "MotoGP", and "race" is not a
         # repeat of "racing".
-        blob = (doc["app_store"]["name"] + " " + doc["app_store"]["subtitle"]).lower()
-        words = set(re.findall(r"[a-z0-9]+", blob))
-        dupes = sorted({t for t in terms
-                        if t and set(re.findall(r"[a-z0-9]+", t.lower())) <= words})
+        # \w+ with re.UNICODE, not [a-z0-9]: an ASCII class silently drops
+        # every accented letter, so Turkish "Yarışı" would tokenise to "yar"
+        # and collide with "yarış" — wrong for all ten non-English locales.
+        tok = lambda s: set(re.findall(r"\w+", s.lower(), re.UNICODE))
+        blob = tok(doc["app_store"]["name"] + " " + doc["app_store"]["subtitle"])
+        dupes = sorted({t for t in terms if t and tok(t) <= blob})
         if dupes:
             problems.append(f"{path.name}: keywords repeat name/subtitle terms: {dupes}")
             print(f"  keywords repeat the name or subtitle: {', '.join(dupes)}")

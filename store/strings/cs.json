@@ -1,0 +1,23 @@
+{
+  "headlines": {
+    "races": "Závody",
+    "riders": "Jezdci",
+    "teams": "Týmy",
+    "news": "Novinky",
+    "h2h": "H2H"
+  },
+  "pills": {
+    "riders": {
+      "subtitle": "Aprilia Racing · 306 b."
+    },
+    "teams": {
+      "subtitle": "Lídr šampionátu týmů"
+    },
+    "news": {
+      "title": "Martín vede do Motegi"
+    },
+    "h2h": {
+      "label": "Výhry"
+    }
+  }
+}
