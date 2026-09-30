@@ -1,5 +1,5 @@
 {
-  "_comment": "One entry per App Store screenshot. 'at' is the pill's vertical position as a fraction of the phone screen height.",
+  "_comment": "One entry per App Store screenshot. 'at' is the pill's vertical position as a fraction of the phone screen height. Pill types: result, standing, news, stat.",
   "fonts": {
     "head": "store/fonts/Poppins.ttf",
     "pill": "store/fonts/Poppins.ttf",
@@ -7,39 +7,33 @@
   },
   "frames": [
     {
-      "headline": "Races",
-      "screen": "races.png",
+      "headline": "Races", "screen": "races.png",
       "pill": {
-        "left": "1.  P. ACOSTA",
-        "right": "0:42:16.99",
-        "at": 0.3
+        "type": "result", "at": 0.29,
+        "badge": "1.", "photo": "photos/motogp/drivers/pedro_acosta@3x.png",
+        "title": "P. Acosta", "subtitle": "Red Bull KTM", "value": "0:42:16.99"
       }
     },
     {
-      "headline": "Riders",
-      "screen": "riders.png",
+      "headline": "Riders", "screen": "riders.png",
       "pill": {
-        "left": "1.  JORGE MARTIN",
-        "right": "306 pts",
-        "at": 0.22
+        "type": "standing", "at": 0.21,
+        "badge": "1.", "photo": "photos/motogp/drivers/jorge_martin@3x.png",
+        "title": "Jorge Martín", "subtitle": "Aprilia Racing · 306 pts",
+        "chips": ["2.", "5.", "5.", "2.", "5."]
       }
     },
     {
-      "headline": "News",
-      "screen": "news.png",
+      "headline": "News", "screen": "news.png",
       "pill": {
-        "left": "EVERY HEADLINE, ONE FEED",
-        "at": 0.44
+        "type": "news", "at": 0.43,
+        "thumb": "store/raw/news.png", "thumb_box": [112, 1725, 455, 1912],
+        "title": "Martín leads into Motegi", "subtitle": "Grande Prêmio"
       }
     },
     {
-      "headline": "H2H",
-      "screen": "h2h.png",
-      "pill": {
-        "left": "WINS",
-        "right": "1  -  5",
-        "at": 0.4
-      }
+      "headline": "H2H", "screen": "h2h.png",
+      "pill": { "type": "stat", "at": 0.39, "label": "Wins", "left": "1", "right": "5", "ratio": 0.17 }
     }
   ]
 }

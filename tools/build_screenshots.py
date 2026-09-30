@@ -21,6 +21,8 @@ TOP, BOTTOM = (18, 20, 27), (7, 8, 11)
 
 PHONE_W = 900                  # phone body width on the canvas
 PHONE_TOP = 640
+PILL_X, PILL_W, PILL_H = 46, 1228, 212
+GOLD = (198, 158, 42)
 BEZEL = 9                      # red frame thickness
 RADIUS = 78
 
@@ -89,6 +91,90 @@ def clean_status_bar(shot: Image.Image, font_path: str) -> Image.Image:
     return shot
 
 
+def photo_tile(path, h):
+    """Rider photo at the 36:25 the app uses, rounded like the app's tiles."""
+    img = Image.open(path).convert("RGB")
+    w = round(h * img.width / img.height)
+    img = img.resize((w, h), Image.LANCZOS).convert("RGBA")
+    img.putalpha(rounded((w, h), 18, (255, 255, 255, 255)).split()[-1])
+    return img
+
+
+def render_pill(pill, fonts):
+    """Pills carry the same furniture as the rows they lift: photo, two text
+    levels, result chips, a split bar. A flat line of text reads as a caption;
+    these read as a piece of the product."""
+    kind = pill.get("type", "text")
+    card = rounded((PILL_W, PILL_H), PILL_H // 2, RED + (255,))
+    d = ImageDraw.Draw(card)
+    mid = PILL_H // 2
+    x = 80
+
+    if kind == "stat":
+        f = ImageFont.truetype(fonts["head"], 60)
+        lab = pill["label"].upper()
+        lw = d.textlength(lab, font=f)
+        d.text(((PILL_W - lw) / 2, mid - 74), lab, font=f, fill=(255, 255, 255))
+        nf = ImageFont.truetype(fonts["head"], 76)
+        d.text((88, mid - 44), pill["left"], font=nf, fill=(255, 255, 255))
+        rw = d.textlength(pill["right"], font=nf)
+        d.text((PILL_W - 88 - rw, mid - 44), pill["right"], font=nf, fill=(255, 255, 255))
+        bx0, bx1, by = 250, PILL_W - 250, mid + 54
+        d.rounded_rectangle([bx0, by, bx1, by + 20], radius=10, fill=(255, 255, 255, 70))
+        split = bx0 + round((bx1 - bx0) * pill.get("ratio", 0.5))
+        d.rounded_rectangle([bx0, by, split, by + 20], radius=10, fill=(255, 255, 255))
+        return card
+
+    if pill.get("badge"):
+        bf = ImageFont.truetype(fonts["head"], 64)
+        d.text((x, mid - 40), pill["badge"], font=bf, fill=(255, 255, 255))
+        x += 96
+
+    if pill.get("photo"):
+        tile = photo_tile(pill["photo"], 116)
+        card.alpha_composite(tile, (x, mid - 58))
+        x += tile.width + 34
+    elif pill.get("thumb"):
+        src = Image.open(pill["thumb"]).convert("RGB").crop(tuple(pill["thumb_box"]))
+        th = 132
+        tw = round(th * src.width / src.height)
+        src = src.resize((tw, th), Image.LANCZOS).convert("RGBA")
+        src.putalpha(rounded((tw, th), 18, (255, 255, 255, 255)).split()[-1])
+        card.alpha_composite(src, (x, mid - th // 2))
+        x += tw + 34
+
+    right_w = 0
+    if pill.get("value"):
+        vf = ImageFont.truetype(fonts["head"], 60)
+        right_w = d.textlength(pill["value"], font=vf) + 80
+        d.text((PILL_W - 80 - (right_w - 80), mid - 38), pill["value"], font=vf, fill=(255, 255, 255))
+    elif pill.get("chips"):
+        cw, gap = 74, 12
+        chips = pill["chips"]
+        right_w = len(chips) * (cw + gap) + 80
+        cx = PILL_W - 80 - len(chips) * (cw + gap) + gap
+        cf = ImageFont.truetype(fonts["ui"], 40)
+        for c in chips:
+            fill = GOLD if c.strip(". ") == "1" else (255, 255, 255, 64)
+            d.rounded_rectangle([cx, mid - 37, cx + cw, mid + 37], radius=16, fill=fill)
+            tw2 = d.textlength(c, font=cf)
+            d.text((cx + (cw - tw2) / 2, mid - 23), c, font=cf, fill=(255, 255, 255))
+            cx += cw + gap
+
+    avail = PILL_W - x - right_w - 40
+    tf = fit_text(d, pill["title"], fonts["head"], avail, 62, 34)
+    sub = pill.get("subtitle")
+    if sub:
+        # the subtitle has to respect the same column as the title, or it runs
+        # under the chips on the right
+        sf = fit_text(d, sub, fonts["ui"], avail, 40, 26)
+        d.text((x, mid - 62), pill["title"], font=tf, fill=(255, 255, 255))
+        d.text((x, mid + 6), sub, font=sf, fill=(255, 255, 255, 205))
+    else:
+        d.text((x, mid - 34), pill["title"], font=tf, fill=(255, 255, 255))
+    return card
+
+
 def build(entry, fonts, shots_dir) -> Image.Image:
     canvas = gradient().convert("RGBA")
     d = ImageDraw.Draw(canvas)
@@ -119,22 +205,10 @@ def build(entry, fonts, shots_dir) -> Image.Image:
     # highlight pill, breaking past the phone's left edge
     pill = entry.get("pill")
     if pill:
-        pw, ph = W - 2 * 46, 156
-        p = rounded((pw, ph), ph // 2, RED + (255,))
-        pd = ImageDraw.Draw(p)
-        left = pill["left"]
-        lf = fit_text(pd, left, fonts["pill"], pw - 380, 62)
-        lb = lf.getbbox(left)
-        pd.text((72, (ph - (lb[3] - lb[1])) / 2 - lb[1]), left, font=lf, fill=(255, 255, 255))
-        if pill.get("right"):
-            rf = ImageFont.truetype(fonts["pill"], 62)
-            rb = rf.getbbox(pill["right"])
-            rw = pd.textlength(pill["right"], font=rf)
-            pd.text((pw - 72 - rw, (ph - (rb[3] - rb[1])) / 2 - rb[1]),
-                    pill["right"], font=rf, fill=(255, 255, 255))
+        p = render_pill(pill, fonts)
         py = PHONE_TOP + round(inner_h * pill["at"])
-        canvas.alpha_composite(shadow(p, 30, 170), (46, py + 16))
-        canvas.alpha_composite(p, (46, py))
+        canvas.alpha_composite(shadow(p, 32, 175), (PILL_X, py + 18))
+        canvas.alpha_composite(p, (PILL_X, py))
 
     return canvas.convert("RGB")
 
