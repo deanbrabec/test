@@ -161,14 +161,14 @@ screen each frame uses, its headline and its pill copy. Output is
 |---|---|---|
 | `flat` | vertical dark gradient | clean, but reads as empty at thumbnail size |
 | `glow` | brand-red halo behind the phone | premium, subtle — almost indistinguishable from `flat` when small |
-| `rise` | red climbing from the bottom edge | warm, the phone sits in light |
-| **`sweep`** | **diagonal red band** | **current default.** Most distinctive small, which is where the first frames do their work |
+| **`rise`** | **red climbing from the bottom edge** | **current default.** Warm, the phone sits in light |
+| `sweep` | diagonal red band | the most distinctive at thumbnail size |
 | `vignette` | centre lifted, corners dropped | subtle depth only |
 
 The first one to three frames appear in App Store search results at a fraction
 of full size, so the background is doing ASO work, not only decoration —
-`sweep` was chosen for being legible as a deliberate design at that scale.
-Switching is one flag; nothing else in the build depends on it.
+`flat` and `glow` become indistinguishable at that scale. Switching is one
+flag; nothing else in the build depends on it.
 
 The builder repaints the status bar on every frame. The raw captures were taken
 on a real phone, so one carried a music player expanded in the Dynamic Island
