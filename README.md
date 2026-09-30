@@ -11,10 +11,16 @@ existing Formula 1 lists.
 | `photos/motogp/teams/` | Team logo tiles, PNG | 12 teams × `@2x` + `@3x` |
 | `maps/motogp/circuits/` | Circuit outlines, SVG | 22 |
 | `maps/motogp/circuits.json` | Circuit name, country, length, direction | 22 entries |
+| `store/` | Store listings, screenshots and the feature graphic | 11 locales |
 | `tools/` | Scripts that produced all of the above | — |
 
 Each folder has its own README with the full specification:
-[`photos/README.md`](photos/README.md) and [`maps/README.md`](maps/README.md).
+[`photos/README.md`](photos/README.md), [`maps/README.md`](maps/README.md) and
+[`store/README.md`](store/README.md).
+
+**Uploading to the App Store or Google Play:** follow
+[`store/UPLOAD.md`](store/UPLOAD.md) — it says which file goes in which console
+field.
 
 ## Using the assets
 
