@@ -182,13 +182,14 @@ not on the 22-rider entry list above. Same spec and same framing.
 | `pol_espargaro` | Pol Espargaró | Tech3 |
 | `cal_crutchlow` | Cal Crutchlow | Yamalube |
 | `takaaki_nakagami` | Takaaki Nakagami | LCR Honda Idm. |
+| `augusto_fernandez` | Augusto Fernández | ME Yamaha |
 
 `cal_crutchlow` is shot in Castrol LCR Honda leathers, which is not the team
 the standings list him under. Replace the source and re-run if that matters.
 
 Still missing, and needed for the standings to be complete: **Iker Lecuona**,
-**Augusto Fernández**, **Jonas Folger** and **Michele Pirro**. Pirro has a
-source but it is unusable — see below.
+**Jonas Folger** and **Michele Pirro**. Pirro has a source but it is unusable —
+see below.
 
 #### What the script needs from a source photo
 
