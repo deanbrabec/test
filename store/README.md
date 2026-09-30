@@ -204,6 +204,45 @@ the logo available here is about 70 px tall inside a JPEG capture, which would
 have to be upscaled. Supplying the icon or logo as a file would let it be
 placed directly.
 
+## Listing copy
+
+`store/listing/<locale>.json` holds every text field for both consoles.
+`en.json` is the master the other ten translate from.
+
+```bash
+python3 tools/check_listing.py store/listing/*.json
+```
+
+The checker enforces each field's hard limit and two App Store keyword rules
+that are easy to break by accident: no space after the commas, and no term
+repeated from the name or subtitle. It compares whole tokens rather than
+substrings, so `gp` is not treated as a repeat of `MotoGP`.
+
+### How the terms are spread
+
+The trademark sits in the subtitle, keywords and both descriptions, and never
+in the name:
+
+| Field | Carries |
+|---|---|
+| Name | `MotoLap: Moto Racing Live` — moto, racing, live |
+| Subtitle | `MotoGP 2026 results & news` — the trademark, the year, results, news |
+| Keywords | gp, grand prix, bike, motorcycle, standings, calendar, schedule, riders, teams, timing, motorsport, superbike |
+
+Nothing is repeated between the three, because the App Store combines them
+before indexing — a word in two places costs characters and buys nothing.
+
+The Google Play description carries the same terms in running prose rather
+than a list, because Google indexes that field and Apple does not.
+
+### Disclaimer
+
+Both descriptions end with it, and the app carries the same line in Settings:
+
+> MotoLap is an unofficial app and is not associated in any way with Dorna
+> Sports, S.L. or the MotoGP group of companies. MOTOGP, MOTO2, MOTO3, GRAND
+> PRIX and related marks are trademarks of Dorna Sports, S.L.
+
 ## Still needed
 
 - [ ] The list of languages to localise into
