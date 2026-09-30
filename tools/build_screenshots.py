@@ -16,7 +16,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-W, H = 1320, 2868
+W, H = 1320, 2868        # App Store iPhone 6.9"; overridden by --size
 RED = (200, 16, 46)            # sampled from the app's own accent
 TOP, BOTTOM = (18, 20, 27), (7, 8, 11)
 
@@ -24,6 +24,25 @@ PHONE_W = 900                  # phone body width on the canvas
 PHONE_TOP = 640
 PILL_X, PILL_W, PILL_H = 46, 1228, 212
 BASELINE = 436          # headline baseline, shared by every frame
+SHOT_RATIO = 2868 / 1320       # aspect of the raw app captures
+
+
+def set_canvas(width: int, height: int) -> None:
+    """Re-lay the composition for a different canvas.
+
+    Google Play refuses any image whose long side is more than twice its short
+    side, and the App Store's own 6.9" frame is 2.17:1, so the Play set has to
+    be a shorter canvas rather than the same file renamed.
+    """
+    global W, H, PHONE_W, PHONE_TOP, PILL_X, PILL_W, PILL_H, BASELINE
+    W, H = width, height
+    BASELINE = round(H * 0.152)
+    PHONE_TOP = round(H * 0.223)
+    room = H - PHONE_TOP - round(H * 0.055)
+    PHONE_W = min(round(W * 0.682), round(room / SHOT_RATIO))
+    PILL_X = round(W * 0.035)
+    PILL_W = W - 2 * PILL_X
+    PILL_H = round(W * 0.161)
 GOLD = (198, 158, 42)
 BEZEL = 9                      # red frame thickness
 RADIUS = 78
@@ -268,10 +287,19 @@ def main(argv=None) -> int:
     p.add_argument("-o", "--out-dir", type=Path, default=Path("store/screenshots"))
     p.add_argument("--lang", default="en")
     p.add_argument("--bg", default="flat", choices=BACKGROUNDS)
+    p.add_argument("--size", default="1320x2868",
+                   help="canvas, WxH. 1320x2868 is the App Store 6.9\" frame; "
+                        "Google Play needs at most 2:1, so 1320x2620 for that")
     p.add_argument("--strings", type=Path,
                    help="locale overrides for headline and pill copy; "
                         "the manifest itself carries the layout and the English text")
     args = p.parse_args(argv)
+
+    width, height = (int(v) for v in args.size.lower().split("x"))
+    if max(width, height) > 2 * min(width, height):
+        print(f"note: {args.size} is {max(width,height)/min(width,height):.2f}:1 — "
+              f"Google Play rejects anything past 2:1", file=sys.stderr)
+    set_canvas(width, height)
 
     spec = json.loads(args.manifest.read_text())
     if args.strings:

@@ -102,7 +102,9 @@ MotoLap to aplikacja nieoficjalna i nie jest w żaden sposób powiązana z Dorna
 
 ## Screenshots
 
-`store/screenshots/pl/` — 5 frames, 1320 × 2868, upload in order:
+### App Store — iPhone 6.9"
+
+`store/screenshots/appstore/pl/` — 5 frames, 1320 × 2868, upload in order:
 
 1. `01_wyścigi.png`
 2. `02_zawodnicy.png`
@@ -110,4 +112,14 @@ MotoLap to aplikacja nieoficjalna i nie jest w żaden sposób powiązana z Dorna
 4. `04_wiadomości.png`
 5. `05_h2h.png`
 
-The same files serve Google Play, which accepts this size.
+### Google Play — phone
+
+`store/screenshots/play/pl/` — 5 frames, 1320 × 2620, upload in order:
+
+1. `01_wyścigi.png`
+2. `02_zawodnicy.png`
+3. `03_zespoły.png`
+4. `04_wiadomości.png`
+5. `05_h2h.png`
+
+The two sets are the same composition on different canvases: Google Play refuses any image whose long side is more than twice its short side, and the App Store 6.9" frame is 2.17:1.

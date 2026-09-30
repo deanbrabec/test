@@ -31,11 +31,17 @@ def sheet(doc: dict, screenshots: Path) -> str:
         for field, label, limit in fields:
             value = doc[key][field]
             out += [f"### {label} — {len(value)}/{limit}", "", "```", value, "```", ""]
-    shots = sorted((screenshots / loc).glob("*.png")) if (screenshots / loc).is_dir() else []
-    out += ["## Screenshots", "",
-            f"`{screenshots / loc}/` — {len(shots)} frames, 1320 × 2868, upload in order:", ""]
-    out += [f"{i}. `{p.name}`" for i, p in enumerate(shots, 1)]
-    out += ["", "The same files serve Google Play, which accepts this size.", ""]
+    out += ["## Screenshots", ""]
+    for store, label, size in (("appstore", "App Store — iPhone 6.9\"", "1320 × 2868"),
+                               ("play", "Google Play — phone", "1320 × 2620")):
+        d = screenshots / store / loc
+        shots = sorted(d.glob("*.png")) if d.is_dir() else []
+        out += [f"### {label}", "", f"`{d}/` — {len(shots)} frames, {size}, upload in order:", ""]
+        out += [f"{i}. `{p.name}`" for i, p in enumerate(shots, 1)]
+        out += [""]
+    out += ["The two sets are the same composition on different canvases: Google "
+            "Play refuses any image whose long side is more than twice its short "
+            "side, and the App Store 6.9\" frame is 2.17:1.", ""]
     return "\n".join(out)
 
 
