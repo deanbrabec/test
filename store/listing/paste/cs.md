@@ -112,6 +112,16 @@ MotoLap je neoficiální aplikace a není nijak spojena se společností Dorna S
 4. `04_novinky.png`
 5. `05_h2h.png`
 
+### App Store — iPad 13"
+
+`store/screenshots/ipad/cs/` — 5 frames, 2064 × 2752, upload in order:
+
+1. `01_závody.png`
+2. `02_jezdci.png`
+3. `03_týmy.png`
+4. `04_novinky.png`
+5. `05_h2h.png`
+
 ### Google Play — phone
 
 `store/screenshots/play/cs/` — 5 frames, 1320 × 2620, upload in order:
@@ -122,4 +132,14 @@ MotoLap je neoficiální aplikace a není nijak spojena se společností Dorna S
 4. `04_novinky.png`
 5. `05_h2h.png`
 
-The two sets are the same composition on different canvases: Google Play refuses any image whose long side is more than twice its short side, and the App Store 6.9" frame is 2.17:1.
+### Google Play — tablet
+
+`store/screenshots/play-tablet/cs/` — 5 frames, 1600 × 2560, upload in order:
+
+1. `01_závody.png`
+2. `02_jezdci.png`
+3. `03_týmy.png`
+4. `04_novinky.png`
+5. `05_h2h.png`
+
+All four are the same composition on different canvases. Google Play refuses any image whose long side is more than twice its short side, and the App Store 6.9" frame is 2.17:1, so its files cannot be reused there. The two tablet sets put the phone UI on a tablet canvas — read the warning in UPLOAD.md before uploading them.

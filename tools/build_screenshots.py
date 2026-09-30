@@ -40,9 +40,14 @@ def set_canvas(width: int, height: int) -> None:
     PHONE_TOP = round(H * 0.223)
     room = H - PHONE_TOP - round(H * 0.055)
     PHONE_W = min(round(W * 0.682), round(room / SHOT_RATIO))
-    PILL_X = round(W * 0.035)
-    PILL_W = W - 2 * PILL_X
-    PILL_H = round(W * 0.161)
+
+    # Pill geometry follows the phone, not the canvas. Tying it to the canvas
+    # made it span nearly the full width on a tablet — twice the width of the
+    # phone it is supposed to be lifting a row out of.
+    overhang = round(PHONE_W * 0.182)
+    PILL_W = PHONE_W + 2 * overhang
+    PILL_X = (W - PHONE_W) // 2 - overhang
+    PILL_H = round(PHONE_W * 0.236)
 GOLD = (198, 158, 42)
 BEZEL = 9                      # red frame thickness
 RADIUS = 78
@@ -94,11 +99,21 @@ def rounded(size, radius, fill) -> Image.Image:
     return img
 
 
-def shadow(img: Image.Image, blur: int, alpha: int) -> Image.Image:
+def drop_shadow(canvas, img, xy, blur, alpha, dy=0):
+    """Composite a soft shadow of `img` onto `canvas`.
+
+    The blur has to be done on a layer the size of the canvas, not the size of
+    the shape. Blurring inside a layer that the shape fills leaves PIL clamping
+    at the border, so the shadow never fades and ends in a hard-edged black
+    rectangle — visible under the phone as a square-cornered block sticking out
+    past its rounded corners.
+    """
     a = img.split()[-1].point(lambda v: min(alpha, v))
-    s = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    s.putalpha(a)
-    return s.filter(ImageFilter.GaussianBlur(blur))
+    layer = Image.new("L", canvas.size, 0)
+    layer.paste(a, (xy[0], xy[1] + dy))
+    shade = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+    shade.putalpha(layer.filter(ImageFilter.GaussianBlur(blur)))
+    canvas.alpha_composite(shade)
 
 
 def fit_text(draw, text, font_path, box_w, start, min_size=28):
@@ -265,7 +280,7 @@ def build(entry, fonts, shots_dir, bg="flat", headline_font=None) -> Image.Image
     body.alpha_composite(screen, (BEZEL, BEZEL))
 
     px = (W - PHONE_W) // 2
-    canvas.alpha_composite(shadow(body, 42, 150), (px, PHONE_TOP + 22))
+    drop_shadow(canvas, body, (px, PHONE_TOP), blur=42, alpha=150, dy=22)
     canvas.alpha_composite(body, (px, PHONE_TOP))
 
     # highlight pill, breaking past the phone's left edge
@@ -273,7 +288,7 @@ def build(entry, fonts, shots_dir, bg="flat", headline_font=None) -> Image.Image
     if pill:
         p = render_pill(pill, fonts)
         py = PHONE_TOP + round(inner_h * pill["at"])
-        canvas.alpha_composite(shadow(p, 32, 175), (PILL_X, py + 18))
+        drop_shadow(canvas, p, (PILL_X, py), blur=32, alpha=175, dy=18)
         canvas.alpha_composite(p, (PILL_X, py))
 
     return canvas.convert("RGB")

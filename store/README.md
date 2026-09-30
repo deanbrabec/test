@@ -49,8 +49,11 @@ ratio at **2:1** — and the App Store's 6.9" frame is 2.17:1, so the iPhone
 files cannot be reused. The Play set is the same composition on a 1320 × 2620
 canvas (1.98:1), built with `--size`.
 
-**iPad is mandatory if the app runs on iPad**: 2064 × 2752, or 2048 × 2732.
-Building it needs iPad captures — see `UPLOAD.md`.
+**iPad is mandatory if the app runs on iPad**: 2064 × 2752. **Play tablet** is
+optional but feeds large-screen ranking: 1600 × 2560 covers both its slots.
+
+Both tablet sets are rendered from the phone captures, because no tablet
+captures exist — see the warning in `UPLOAD.md` before uploading them.
 
 Both stores: JPEG or 24-bit PNG, **no alpha channel**.
 
@@ -159,6 +162,18 @@ python3 tools/build_screenshots.py --manifest store/frames.json \
 `store/raw/` holds the untouched app captures, `store/frames.json` says which
 screen each frame uses, its headline and its pill copy. Output is
 `store/screenshots/<lang>/`.
+
+`--size` picks the canvas, and the layout re-flows to it: the headline
+baseline, the phone and the pill are all derived from it rather than fixed. The
+pill follows the *phone* rather than the canvas — tied to the canvas it spanned
+nearly the full width on a tablet.
+
+| Set | `--size` | Ratio |
+|---|---|---|
+| App Store iPhone 6.9" | `1320x2868` | 2.17:1 |
+| App Store iPad 13" | `2064x2752` | 1.33:1 |
+| Google Play phone | `1320x2620` | 1.98:1 |
+| Google Play tablet | `1600x2560` | 1.60:1 |
 
 `--bg` picks the canvas behind the phone:
 

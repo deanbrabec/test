@@ -33,15 +33,19 @@ def sheet(doc: dict, screenshots: Path) -> str:
             out += [f"### {label} — {len(value)}/{limit}", "", "```", value, "```", ""]
     out += ["## Screenshots", ""]
     for store, label, size in (("appstore", "App Store — iPhone 6.9\"", "1320 × 2868"),
-                               ("play", "Google Play — phone", "1320 × 2620")):
+                               ("ipad", "App Store — iPad 13\"", "2064 × 2752"),
+                               ("play", "Google Play — phone", "1320 × 2620"),
+                               ("play-tablet", "Google Play — tablet", "1600 × 2560")):
         d = screenshots / store / loc
         shots = sorted(d.glob("*.png")) if d.is_dir() else []
         out += [f"### {label}", "", f"`{d}/` — {len(shots)} frames, {size}, upload in order:", ""]
         out += [f"{i}. `{p.name}`" for i, p in enumerate(shots, 1)]
         out += [""]
-    out += ["The two sets are the same composition on different canvases: Google "
-            "Play refuses any image whose long side is more than twice its short "
-            "side, and the App Store 6.9\" frame is 2.17:1.", ""]
+    out += ["All four are the same composition on different canvases. Google Play "
+            "refuses any image whose long side is more than twice its short side, "
+            "and the App Store 6.9\" frame is 2.17:1, so its files cannot be "
+            "reused there. The two tablet sets put the phone UI on a tablet "
+            "canvas — read the warning in UPLOAD.md before uploading them.", ""]
     return "\n".join(out)
 
 
