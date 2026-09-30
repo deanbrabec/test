@@ -184,15 +184,15 @@ not on the 22-rider entry list above. Same spec and same framing.
 | `takaaki_nakagami` | Takaaki Nakagami | LCR Honda Idm. |
 | `augusto_fernandez` | Augusto Fernández | ME Yamaha |
 | `michele_pirro` | Michele Pirro | Gresini |
+| `iker_lecuona` | Iker Lecuona | Repsol Honda |
 
-`cal_crutchlow` is shot in Castrol LCR Honda leathers and `michele_pirro` in
-Ducati Lenovo team kit, neither of which is the team the standings list them
-under — both ride for whoever they stand in for. Pirro is also the one rider
+`cal_crutchlow` is shot in Castrol LCR Honda leathers, `michele_pirro` in
+Ducati Lenovo team kit and `iker_lecuona` in BK8 Gresini, none of which is the
+team the standings list them under — they ride for whoever they stand in for. Pirro is also the one rider
 in a team polo rather than leathers, which is barely visible at tile size. Replace the source and re-run if that
 matters.
 
-Still missing, and needed for the standings to be complete: **Iker Lecuona**
-and **Jonas Folger**.
+Still missing, and needed for the standings to be complete: **Jonas Folger**.
 
 #### What the script needs from a source photo
 
