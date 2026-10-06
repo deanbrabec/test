@@ -186,6 +186,7 @@ not on the 22-rider entry list above. Same spec and same framing.
 | `augusto_fernandez` | Augusto Fernández | ME Yamaha |
 | `michele_pirro` | Michele Pirro | Gresini |
 | `iker_lecuona` | Iker Lecuona | Repsol Honda |
+| `somkiat_chantra` | Somkiat Chantra | Honda — team label not confirmed |
 
 `cal_crutchlow` is shot in Castrol LCR Honda leathers, `michele_pirro` in
 Ducati Lenovo team kit and `iker_lecuona` in BK8 Gresini, none of which is the
